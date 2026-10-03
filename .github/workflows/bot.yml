@@ -1,4 +1,4 @@
-name: Bot Minerador do Brawl Stars
+name: Leitor de Dados
 
 on:
   schedule:
