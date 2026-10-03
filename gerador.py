@@ -40,10 +40,12 @@ MAPEAMENTO_PLAYERS = {
         "#2GV09VJJP": {"nome": "FireMirillo", "id_time": "AL", "nome_time": "ACRE LOVERS", "regiao": "SA"},
         "#PLJ8VQY2C": {"nome": "OS|Satisfyer", "id_time": "OS", "nome_time": "OLIMPO SQUAD", "regiao": "SA"},
         "#PR9U2JL": {"nome": "SKC|Juan Carlos", "id_time": "SKC", "nome_time": "SKCALALAS SA", "regiao": "SA"},
+        "#CPPV2PQG": {"nome": "GDT| MeliodasGod🐐", "id_time": "GDT", "nome_time": "GORDITOS", "regiao": "SA"},
+        "#P8RQ90UY9": {"nome": "MVK| VitorKingBS👑", "id_time": "MVK", "nome_time": "MOCHILA DO VK", "regiao": "SA"},
         "#R2LR2QLG": {"nome": "RED|Mohtep", "id_time": "RED", "nome_time": "RED CANIDS", "regiao": "SA"},
         "#80VLPJCCC": {"nome": "CB|Tilo", "id_time": "CB", "nome_time": "CRECHE BRAWL", "regiao": "SA"},
         "#GJPVYUQG": {"nome": "QQQ|Deykonn", "id_time": "QQQ", "nome_time": "QUIERO QUE QUE", "regiao": "SA"},
-        "#9JVUGR2JG": {"nome": "PIT|Xablau🎩", "id_time": "PIT", "nome_time": "PIT ESPORTS", "regiao": "SA"},
+        "#9JVUGR2JG": {"nome": "RZ0|Xablau🎩", "id_time": "RZ0", "nome_time": "RISING ZERO", "regiao": "SA"},
         "#LLVPJYV88": {"nome": "GE4R| Kirito🔥", "id_time": "GE4R", "nome_time": "RISING GE4R", "regiao": "SA"},
         "#JCGGGQUP": {"nome": "NX| Sagaz", "id_time": "NX", "nome_time": "NOXIUM E-SPORTS", "regiao": "SA"},
         
