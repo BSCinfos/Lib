@@ -361,10 +361,44 @@ def minerar_dados():
                 brawlers_list = [nome_brawler(p.get('brawler', {})) for p in all_p]
 
                 is_matcherino = any(t in tags_torneio for t in tags_list)
-                tipo_raw = battle.get('type', 'friendly').lower()
+                tipo_raw = str(battle.get('type') or '').strip().lower()
                 bans_raw = battle.get('bannedBrawlers') or battle.get('bans') or []
 
-                tipo_final = 'tournament' if (is_matcherino or len(bans_raw) > 0 or 'ranked' in tipo_raw) else 'scrim'
+                # ============================================================
+                # FILTRO DE TIPO DE PARTIDA
+                # Aceitamos somente partidas AMISTOSAS e de TORNEIO.
+                #
+                # O código anterior fazia isto:
+                #   'ranked' in tipo_raw -> tournament
+                #
+                # Isso transformava partidas ranqueadas em torneios e fazia
+                # com que elas entrassem no historico_bruto.csv.
+                #
+                # Em torneios, o battlelog pode aparecer como "friendly";
+                # nesses casos o Matcherino ou os bans identificam o torneio.
+                # ============================================================
+                tipos_nao_permitidos = {
+                    'ranked',
+                    'soloranked',
+                    'teamranked',
+                    'challenge',
+                    'championshipchallenge'
+                }
+
+                # Nunca aceitar Ranked/Challenge, mesmo que haja bans.
+                if tipo_raw in tipos_nao_permitidos:
+                    continue
+
+                if tipo_raw == 'tournament':
+                    tipo_final = 'tournament'
+                elif tipo_raw == 'friendly':
+                    # Mantemos "scrim" no CSV para não quebrar o filtro/UI
+                    # existente do site. A origem, porém, é obrigatoriamente
+                    # uma batalha cujo battle.type é friendly.
+                    tipo_final = 'tournament' if (is_matcherino or len(bans_raw) > 0) else 'scrim'
+                else:
+                    # Não assumir que um tipo ausente/desconhecido é friendly.
+                    continue
 
                 time_str = b_time.split(".")[0] if b_time else "00000000T000000"
                 pid = f"{time_str}_{mapa}_{'_'.join(tags_list)}_{'_'.join(brawlers_list)}"
