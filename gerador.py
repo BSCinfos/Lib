@@ -39,7 +39,7 @@ MAPEAMENTO_PLAYERS = {
         "#9JYG98GG": {"nome": "DZ|Bryan 乂", "id_time": "DZ", "nome_time": "DAYCARE ZERO", "regiao": "SA"},
         "#CQLR0Y80": {"nome": "NS|Tufa", "id_time": "NS", "nome_time": "NINGUÉM SEGURA", "regiao": "SA"},
         "#2GV09VJJP": {"nome": "FireMirillo", "id_time": "AL", "nome_time": "ACRE LOVERS", "regiao": "SA"},
-        "#PLJ8VQY2C": {"nome": "OS|Satisfyer", "id_time": "OS", "nome_time": "OLIMPO SQUAD", "regiao": "SA"},
+        "#9QCJPL20": {"nome": "OS|Golden", "id_time": "OS", "nome_time": "OLIMPO SQUAD", "regiao": "SA"},
         "#PR9U2JL": {"nome": "SKC|Juan Carlos", "id_time": "SKC", "nome_time": "SKCALALAS SA", "regiao": "SA"},
         "#CPPV2PQG": {"nome": "GDT| MeliodasGod🐐", "id_time": "GDT", "nome_time": "GORDITOS", "regiao": "SA"},
         "#P8RQ90UY9": {"nome": "MVK| VitorKingBS👑", "id_time": "MVK", "nome_time": "MOCHILA DO VK", "regiao": "SA"},
