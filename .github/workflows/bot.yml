@@ -1,9 +1,9 @@
-name: Leitor de Dados
+name: Bot Minerador do Brawl Stars
 
 on:
   schedule:
     # Roda a cada 15 minutos
-    - cron: '*/15 * * * *'
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -32,6 +32,18 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git pull --rebase origin main
+
+      - name: Ver IP público do GitHub Actions
+        run: |
+          IP=$(curl -4 -fsS --max-time 10 https://api.ipify.org || true)
+          if [ -z "$IP" ]; then
+            IP=$(curl -4 -fsS --max-time 10 https://ifconfig.me || true)
+          fi
+
+          echo "=========================================="
+          echo "IP PÚBLICO DO RUNNER DO GITHUB ACTIONS:"
+          echo "${IP:-Não foi possível obter o IP}"
+          echo "=========================================="
 
       - name: Rodando o Gerador (Bot)
         run: python gerador.py
