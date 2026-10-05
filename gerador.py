@@ -9,8 +9,7 @@ from collections import Counter
 # =============================================================================
 # CONFIGURAÇÃO GERAL
 # =============================================================================
-API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjdkYjcyM2ZjLWRkNWYtNDUyYi04OGI4LTc5MmEzNzU5MDlhYSIsImlhdCI6MTc5MTA4MTA3OSwic3ViIjoiZGV2ZWxvcGVyLzc0NjFhNGJkLThhZDctNjg2Mi0wOGVkLTJiYmEzMzAxMWE3NiIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiMTcyLjE4My4xMzMuMjUxIl0sInR5cGUiOiJjbGllbnQifV19.AYr7O5bjRu4hrqf6-O10-xV18g0qksCx_XJ3YPVlV5MFnlxOdnchPEwEKjujiI1L-0ZB8CbgtTD3SICCKqEnFg"
-API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImEzNDhmZGJiLTkxMTgtNGQwNC1hNDUwLTQ4MThjOTE2MTRlYyIsImlhdCI6MTc5MTA4MTU3NSwic3ViIjoiZGV2ZWxvcGVyLzc0NjFhNGJkLThhZDctNjg2Mi0wOGVkLTJiYmEzMzAxMWE3NiIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiMjAuMjIwLjExMC4xNDciXSwidHlwZSI6ImNsaWVudCJ9XX0.0EL-_QOXyc0hRn0mQ13kcLNs-GBSki2osLhVeNNiHE3mEmAo8XoIzpckeRtO8J1iE0SVxSymkgp2u7Ws0jdK7g"
+API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImEzYWMwNWZhLWY0NWYtNDFmOC04ZDA5LTA4ZGNmN2U5ZGRiMyIsImlhdCI6MTc4NjI5ODQzOCwic3ViIjoiZGV2ZWxvcGVyLzc0NjFhNGJkLThhZDctNjg2Mi0wOGVkLTJiYmEzMzAxMWE3NiIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiNDUuNzkuMjE4Ljc5Il0sInR5cGUiOiJjbGllbnQifV19.fsBdZM3P7b6vavuXNvVZUF93eJKR4kQPrpAqhw5YgrMtrwDITQKmZIR7ZoZzclyO4zcY_Cj7RTdjTOCxkacTjg"
 
 # Proxy da RoyaleAPI: tentado primeiro (contorna o IP fixo travado no token).
 PROXY_URL = "https://bsproxy.royaleapi.dev/v1"
@@ -23,6 +22,29 @@ ARQUIVO_ROSTERS = "rosters.json"
 
 COLUNAS_PICKS = ["id_partida", "regiao", "id_players", "name_players", "pick", "win", "win_rate", "modo", "mapa", "data_adicao", "player_tag", "player_name", "id_time", "nome_time", "tipo"]
 COLUNAS_BANS = ["id_partida", "regiao", "mapa", "modo", "id_time", "nome_time", "brawler_banido", "data_adicao", "tipo"]
+
+# IP PUBLICO AUTORIZADO PARA EXECUCAO
+# O gerador NAO consegue escolher o IP publico do GitHub Actions.
+# Esta verificacao apenas impede a execucao se o runner estiver usando outro IP.
+IP_PUBLICO_TRAVADO = "20.169.69.129"
+
+def verificar_ip_publico_travado():
+    try:
+        ip_atual = requests.get("https://api.ipify.org", timeout=10).text.strip()
+    except Exception as e:
+        raise RuntimeError(f"Nao foi possivel verificar o IP publico do runner: {e}")
+
+    print(f"[IP] IP publico detectado: {ip_atual}")
+    print(f"[IP] IP autorizado para este gerador: {IP_PUBLICO_TRAVADO}")
+
+    if ip_atual != IP_PUBLICO_TRAVADO:
+        raise RuntimeError(
+            f"IP NAO AUTORIZADO. O gerador esta travado para {IP_PUBLICO_TRAVADO}, "
+            f"mas o runner esta usando {ip_atual}. Execucao interrompida."
+        )
+
+    print("[IP] OK - IP autorizado. Continuando a mineracao.")
+
 
 # Mapeamento de Tags para identificação automática de Região, Time e Nick
 #
@@ -501,4 +523,5 @@ def minerar_dados():
     print("==============================================\n")
 
 if __name__ == "__main__":
+    verificar_ip_publico_travado()
     minerar_dados()
