@@ -270,15 +270,18 @@
             }
         }
 
-        /* Identidade visual específica da região: EA */
-        :root { --accent-purple: #ff4fa3; --accent-color: #ff4fa3; --region-color: #ff4fa3; }
-        .navbar { border-bottom: 2px solid #ff4fa3; }
-        .navbar .nav-links > .dropdown > #sa-menu-btn,
-        .navbar .nav-links > .dropdown > .nav-link { color: #ff4fa3 !important; }
-        .navbar .nav-link:hover,
-        .navbar .dropdown-content a:hover { background: rgba(255,79,163, .14); color: #ff4fa3 !important; }
-        .navbar .nav-links > .dropdown > #sa-menu-btn { border-bottom: 2px solid #ff4fa3; }
+        /* Cor da região na navbar */
+        .navbar .nav-link#ea-menu-btn {
+            color: #ff4fa3 !important;
+        }
+        .navbar .nav-link#ea-menu-btn:hover {
+            filter: brightness(1.18);
+        }
+
     </style>
+
+    <link rel="stylesheet" href="platform.css">
+    <script src="platform.js" defer></script>
 </head>
 <body>
 
@@ -287,7 +290,7 @@
 
         <div class="nav-links">
             <div class="dropdown">
-                <a href="#" class="nav-link" id="sa-menu-btn">EA ▼ (META)</a>
+                <a href="#" class="nav-link" id="ea-menu-btn" style="color: #ff4fa3;">EA ▼ (META)</a>
 
                 <div class="dropdown-content">
                     <a href="#" onclick="mudarTela('meta'); return false;">Meta</a>
