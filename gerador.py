@@ -9,7 +9,7 @@ from collections import Counter
 # =============================================================================
 # CONFIGURAÇÃO GERAL
 # =============================================================================
-API_KEY = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImVjY2U0YWI0LWRmZTYtNDJmMi1hODc0LTE0ZGVmOGRhYjZjZCIsImlhdCI6MTc5MTMxMTk3Niwic3ViIjoiZGV2ZWxvcGVyLzc0NjFhNGJkLThhZDctNjg2Mi0wOGVkLTJiYmEzMzAxMWE3NiIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiMjAuMTY5LjY5LjEyOSJdLCJ0eXBlIjoiY2xpZW50In1dfQ.3zGdGOVqrjGdxN2Cs4kWalNt8Wj95BuiqBA7IiC_hUzacsQqKoUrcPjtp_wH_DfUTFlgW7r3bJ5oF9jsZX6hSA"
+API_KEY = os.getenv("BRAWL_STARS_API_KEY", "").strip()
 
 # Proxy da RoyaleAPI: tentado primeiro (contorna o IP fixo travado no token).
 PROXY_URL = "https://bsproxy.royaleapi.dev/v1"
@@ -29,10 +29,27 @@ COLUNAS_BANS = ["id_partida", "regiao", "mapa", "modo", "id_time", "nome_time", 
 IP_PUBLICO_TRAVADO = "20.169.69.129"
 
 def verificar_ip_publico_travado():
-    try:
-        ip_atual = requests.get("https://api.ipify.org", timeout=10).text.strip()
-    except Exception as e:
-        raise RuntimeError(f"Nao foi possivel verificar o IP publico do runner: {e}")
+    """Confere o IP de saída e interrompe o gerador se não for o autorizado."""
+    ip_atual = None
+    erros = []
+
+    # Usa mais de um serviço para evitar falha por indisponibilidade pontual.
+    for servico_ip in ("https://api.ipify.org", "https://ifconfig.me/ip"):
+        try:
+            resposta = requests.get(servico_ip, timeout=10)
+            resposta.raise_for_status()
+            candidato = resposta.text.strip()
+            if candidato:
+                ip_atual = candidato
+                break
+            erros.append(f"{servico_ip}: resposta vazia")
+        except Exception as e:
+            erros.append(f"{servico_ip}: {e}")
+
+    if not ip_atual:
+        raise RuntimeError(
+            "Não foi possível verificar o IP público do runner. " + " | ".join(erros)
+        )
 
     print(f"[IP] IP publico detectado: {ip_atual}")
     print(f"[IP] IP autorizado para este gerador: {IP_PUBLICO_TRAVADO}")
@@ -281,6 +298,8 @@ def atualizar_rosters_automaticos():
 
 def minerar_dados():
     global MAPEAMENTO_PLAYERS
+    if not API_KEY:
+        raise RuntimeError("A chave da API não foi configurada. Cadastre BRAWL_STARS_API_KEY nos Secrets do GitHub e disponibilize-a no workflow.")
     tags_torneio = set()
 
     # Automatização do Matcherino via arquivo 'torneios.txt'
