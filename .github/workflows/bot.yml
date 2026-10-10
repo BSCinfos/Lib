@@ -2,13 +2,20 @@ name: Bot Minerador do Brawl Stars
 
 on:
   schedule:
-    # Roda a cada 15 minutos
+    # Roda a cada 30 minutos
     - cron: '*/30 * * * *'
   workflow_dispatch:
 
+# Evita duas execuções simultâneas tentando alterar os mesmos arquivos.
+concurrency:
+  group: bscinfos-bot-minerador
+  cancel-in-progress: false
+
 jobs:
   minerar_e_atualizar:
-    runs-on: ubuntu-latest
+    # IMPORTANTE: este runner precisa estar instalado em uma máquina cuja saída
+    # pública para a internet seja realmente 20.169.69.129.
+    runs-on: [self-hosted, linux, x64]
     env:
       TZ: 'America/Sao_Paulo'
       BRAWL_STARS_API_KEY: ${{ secrets.BRAWL_STARS_API_KEY }}
@@ -40,13 +47,12 @@ jobs:
           fi
 
           if [ "$IP" != "$IP_AUTORIZADO" ]; then
-            echo "ERRO: IP não autorizado. O GitHub Actions gratuito usa IPs de saída variáveis."
-            echo "O workflow será interrompido antes de instalar dependências ou executar o gerador."
+            echo "ERRO: o runner não está saindo pelo IP fixo autorizado."
+            echo "Configure a rede/saída pública do servidor para usar ${IP_AUTORIZADO}."
             exit 1
           fi
 
           echo "IP autorizado. Continuando o workflow."
-
 
       - name: Instalando o Python
         uses: actions/setup-python@v5
@@ -55,18 +61,30 @@ jobs:
 
       - name: Instalando as bibliotecas
         run: |
-          pip install pandas brawlstats
+          python -m pip install --upgrade pip
+          python -m pip install pandas brawlstats requests
 
       - name: Sincronizar e Configurar Git
+        shell: bash
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git pull --rebase origin main
 
+      - name: Validar chave da Brawl Stars API
+        shell: bash
+        run: |
+          if [ -z "$BRAWL_STARS_API_KEY" ]; then
+            echo "ERRO: configure o Secret BRAWL_STARS_API_KEY no repositório."
+            exit 1
+          fi
+          echo "Secret BRAWL_STARS_API_KEY configurado."
+
       - name: Rodando o Gerador (Bot)
         run: python gerador.py
 
       - name: Salvando as alterações no GitHub
+        shell: bash
         run: |
           git add historico_bruto.csv estatisticas_finais.csv rosters.json api/
 
