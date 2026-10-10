@@ -5,7 +5,7 @@
     <script src="auth.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EUROPE MIDDLE EAST & AFRICA Infos</title>
+    <title>EUROPE, MIDDLE EAST AND AFRICA Infos</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
@@ -270,15 +270,18 @@
             }
         }
 
-        /* Identidade visual específica da região: EMEA */
-        :root { --accent-purple: #2583ff; --accent-color: #2583ff; --region-color: #2583ff; }
-        .navbar { border-bottom: 2px solid #2583ff; }
-        .navbar .nav-links > .dropdown > #sa-menu-btn,
-        .navbar .nav-links > .dropdown > .nav-link { color: #2583ff !important; }
-        .navbar .nav-link:hover,
-        .navbar .dropdown-content a:hover { background: rgba(37,131,255, .14); color: #2583ff !important; }
-        .navbar .nav-links > .dropdown > #sa-menu-btn { border-bottom: 2px solid #2583ff; }
+        /* Cor da região na navbar */
+        .navbar .nav-link#emea-menu-btn {
+            color: #3498ff !important;
+        }
+        .navbar .nav-link#emea-menu-btn:hover {
+            filter: brightness(1.18);
+        }
+
     </style>
+
+    <link rel="stylesheet" href="platform.css">
+    <script src="platform.js" defer></script>
 </head>
 <body>
 
@@ -287,7 +290,7 @@
 
         <div class="nav-links">
             <div class="dropdown">
-                <a href="#" class="nav-link" id="sa-menu-btn">EMEA ▼ (META)</a>
+                <a href="#" class="nav-link" id="emea-menu-btn" style="color: #3498ff;">EMEA ▼ (META)</a>
 
                 <div class="dropdown-content">
                     <a href="#" onclick="mudarTela('meta'); return false;">Meta</a>
@@ -340,7 +343,7 @@
 
         <header class="page-header">
             <h1>
-                EUROPE MIDDLE EAST & AFRICA INFOS
+                EUROPE, MIDDLE EAST AND AFRICA INFOS
                 <span class="accent">ANALYSIS</span>
             </h1>
         </header>
