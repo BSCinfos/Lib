@@ -13,46 +13,18 @@ concurrency:
 
 jobs:
   minerar_e_atualizar:
-    # IMPORTANTE: este runner precisa estar instalado em uma máquina cuja saída
-    # pública para a internet seja realmente 20.169.69.129.
-    runs-on: [self-hosted, linux, x64]
+    # Runner padrão do GitHub. O IP fixo é garantido pelo proxy da RoyaleAPI
+    # (45.79.218.79), usado dentro do gerador.py — não depende do IP do runner.
+    runs-on: ubuntu-latest
     env:
       TZ: 'America/Sao_Paulo'
-      BRAWL_STARS_API_KEY: "${{ secrets.BRAWL_STARS_API_KEY }}"
+      BRAWL_STARS_API_KEY: ${{ secrets.BRAWL_STARS_API_KEY }}
     permissions:
       contents: write
 
     steps:
       - name: Baixando os arquivos do repositório
         uses: actions/checkout@v4
-
-      - name: Verificar IP público autorizado
-        shell: bash
-        run: |
-          set -euo pipefail
-          IP=$(curl -4 -fsS --max-time 10 https://api.ipify.org || true)
-          if [ -z "$IP" ]; then
-            IP=$(curl -4 -fsS --max-time 10 https://ifconfig.me/ip || true)
-          fi
-
-          IP_AUTORIZADO="20.169.69.129"
-          echo "=========================================="
-          echo "IP PÚBLICO DO RUNNER: ${IP:-Não foi possível obter o IP}"
-          echo "IP AUTORIZADO: ${IP_AUTORIZADO}"
-          echo "=========================================="
-
-          if [ -z "$IP" ]; then
-            echo "ERRO: não foi possível verificar o IP público. Execução interrompida."
-            exit 1
-          fi
-
-          if [ "$IP" != "$IP_AUTORIZADO" ]; then
-            echo "ERRO: o runner não está saindo pelo IP fixo autorizado."
-            echo "Configure a rede/saída pública do servidor para usar ${IP_AUTORIZADO}."
-            exit 1
-          fi
-
-          echo "IP autorizado. Continuando o workflow."
 
       - name: Instalando o Python
         uses: actions/setup-python@v5
@@ -62,7 +34,7 @@ jobs:
       - name: Instalando as bibliotecas
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pandas brawlstats requests
+          python -m pip install pandas requests
 
       - name: Sincronizar e Configurar Git
         shell: bash
