@@ -11,10 +11,12 @@ from collections import Counter
 # =============================================================================
 API_KEY = os.getenv("BRAWL_STARS_API_KEY", "").strip()
 
-# Proxy da RoyaleAPI: tentado primeiro (contorna o IP fixo travado no token).
+# IP FIXO via proxy da RoyaleAPI.
+# Todas as requisições saem pelo IP fixo 45.79.218.79, que é o IP que deve estar
+# cadastrado na chave (token) em https://developer.brawlstars.com.
+# Assim o workflow roda em qualquer runner do GitHub Actions, mesmo com IP dinâmico.
 PROXY_URL = "https://bsproxy.royaleapi.dev/v1"
-# API oficial da Supercell: usada como fallback automático se o proxy falhar.
-API_OFICIAL_URL = "https://api.brawlstars.com/v1"
+IP_FIXO_PROXY = "45.79.218.79"
 
 ARQUIVO_BRUTO = "historico_bruto.csv"
 ARQUIVO_BANS = "bans_matcherino.csv"
@@ -22,46 +24,6 @@ ARQUIVO_ROSTERS = "rosters.json"
 
 COLUNAS_PICKS = ["id_partida", "regiao", "id_players", "name_players", "pick", "win", "win_rate", "modo", "mapa", "data_adicao", "player_tag", "player_name", "id_time", "nome_time", "tipo"]
 COLUNAS_BANS = ["id_partida", "regiao", "mapa", "modo", "id_time", "nome_time", "brawler_banido", "data_adicao", "tipo"]
-
-# IP PUBLICO AUTORIZADO PARA EXECUCAO
-# O gerador NAO consegue escolher o IP publico do GitHub Actions.
-# Esta verificacao apenas impede a execucao se o runner estiver usando outro IP.
-IP_PUBLICO_TRAVADO = "20.169.69.129"
-
-def verificar_ip_publico_travado():
-    """Confere o IP de saída e interrompe o gerador se não for o autorizado."""
-    ip_atual = None
-    erros = []
-
-    # Usa mais de um serviço para evitar falha por indisponibilidade pontual.
-    for servico_ip in ("https://api.ipify.org", "https://ifconfig.me/ip"):
-        try:
-            resposta = requests.get(servico_ip, timeout=10)
-            resposta.raise_for_status()
-            candidato = resposta.text.strip()
-            if candidato:
-                ip_atual = candidato
-                break
-            erros.append(f"{servico_ip}: resposta vazia")
-        except Exception as e:
-            erros.append(f"{servico_ip}: {e}")
-
-    if not ip_atual:
-        raise RuntimeError(
-            "Não foi possível verificar o IP público do runner. " + " | ".join(erros)
-        )
-
-    print(f"[IP] IP publico detectado: {ip_atual}")
-    print(f"[IP] IP autorizado para este gerador: {IP_PUBLICO_TRAVADO}")
-
-    if ip_atual != IP_PUBLICO_TRAVADO:
-        raise RuntimeError(
-            f"IP NAO AUTORIZADO. O gerador esta travado para {IP_PUBLICO_TRAVADO}, "
-            f"mas o runner esta usando {ip_atual}. Execucao interrompida."
-        )
-
-    print("[IP] OK - IP autorizado. Continuando a mineracao.")
-
 
 # Mapeamento de Tags para identificação automática de Região, Time e Nick
 #
@@ -147,25 +109,22 @@ def nome_brawler(b):
 
 def buscar_battlelog(tag_url, headers_api):
     """
-    Tenta buscar o battlelog primeiro via proxy RoyaleAPI, e se falhar
-    (qualquer erro de conexão ou status != 200), tenta de novo via API
-    oficial da Supercell direto. Retorna (resposta, origem, erro).
-    Se as duas tentativas falharem, resposta vem None e erro tem o motivo.
+    Busca o battlelog SEMPRE via proxy RoyaleAPI (IP fixo 45.79.218.79).
+    Não há fallback direto: a chave só é válida para o IP do proxy, então uma
+    chamada direta pela Supercell seria sempre recusada (403).
+    Retorna (resposta, origem, erro). Se falhar, resposta vem None.
     """
-    tentativas = [
-        (f"{PROXY_URL}/players/{tag_url}/battlelog", "proxy"),
-        (f"{API_OFICIAL_URL}/players/{tag_url}/battlelog", "direto"),
-    ]
-    ultimo_erro = None
-    for url, origem in tentativas:
-        try:
-            resp = requests.get(url, headers=headers_api, timeout=10)
-            if resp.status_code == 200:
-                return resp, origem, None
-            ultimo_erro = f"HTTP {resp.status_code} via {origem} -> {resp.text[:150]}"
-        except Exception as e:
-            ultimo_erro = f"Exceção via {origem} -> {e}"
-    return None, None, ultimo_erro
+    url = f"{PROXY_URL}/players/{tag_url}/battlelog"
+    try:
+        resp = requests.get(url, headers=headers_api, timeout=15)
+        if resp.status_code == 200:
+            return resp, "proxy", None
+        erro = f"HTTP {resp.status_code} via proxy -> {resp.text[:150]}"
+        if resp.status_code == 403:
+            erro += f" | Confira se a chave foi criada com o IP {IP_FIXO_PROXY}"
+        return None, None, erro
+    except Exception as e:
+        return None, None, f"Exceção via proxy -> {e}"
 
 
 def atualizar_rosters_automaticos():
@@ -520,7 +479,7 @@ def minerar_dados():
 
     print("\n========== DIAGNOSTICO DA EXECUCAO ==========")
     print(f"Jogadores consultados: {stats['total_players']}")
-    print(f"  Respostas OK: {stats['status_ok']}  (proxy: {stats['origem_sucesso'].get('proxy',0)}, direto: {stats['origem_sucesso'].get('direto',0)})")
+    print(f"  Respostas OK: {stats['status_ok']}  (via proxy IP fixo: {stats['origem_sucesso'].get('proxy',0)})")
     print(f"  Falhas de conexao/autenticacao: {stats['falhas_conexao']}")
     print(f"Partidas brutas lidas nos battlelogs: {stats['total_items_lidos']}")
     print(f"  Descartadas (nao eram 3v3): {stats['items_nao_3v3']}")
@@ -540,6 +499,9 @@ def minerar_dados():
         )
     print("===========================================")
     print("==============================================\n")
+
+if __name__ == "__main__":
+    minerar_dados()
 
 if __name__ == "__main__":
     verificar_ip_publico_travado()
