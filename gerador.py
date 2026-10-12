@@ -502,7 +502,3 @@ def minerar_dados():
 
 if __name__ == "__main__":
     minerar_dados()
-
-if __name__ == "__main__":
-    verificar_ip_publico_travado()
-    minerar_dados()
