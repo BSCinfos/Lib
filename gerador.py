@@ -50,7 +50,7 @@ MAPEAMENTO_PLAYERS = {
         "#9JVUGR2JG": {"nome": "RZ0|Xablau🎩", "id_time": "RZ0", "nome_time": "RISING ZERO", "regiao": "SA"},
         "#LLVPJYV88": {"nome": "GE4R| Kirito🔥", "id_time": "GE4R", "nome_time": "RISING GE4R", "regiao": "SA"},
         "#JCGGGQUP": {"nome": "NX| Sagaz", "id_time": "NX", "nome_time": "NOXIUM E-SPORTS", "regiao": "SA"},
-        "#990Q2U209": {"nome": "YX| Fire Goldon:D", "id_time": "YX", "nome_time": "YRONIX", "regiao": "SA"},
+        "#8QUR8R2YR": {"nome": "YX| メCarlīNn🐦", "id_time": "YX", "nome_time": "YRONIX", "regiao": "SA"},
         
 # NA
         "#LVRRYPV": {"nome": "KDS|Bobby", "id_time": "KDS", "nome_time": "KDS", "regiao": "NA"},
