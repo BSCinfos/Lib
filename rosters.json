@@ -799,22 +799,6 @@
       }
     ]
   },
-  "#8CQURRJJY": {
-    "nome": "RNTX | Sergeant",
-    "id_time": "RNTX",
-    "nome_time": "REVENANT",
-    "regiao": "EA",
-    "jogadores": [
-      {
-        "tag": "#2U9P2YJRYP",
-        "nome": "RNTX | Walkthru"
-      },
-      {
-        "tag": "#2JYRU9QVUP",
-        "nome": "Kx"
-      }
-    ]
-  },
   "#8G982C80L": {
     "nome": "WWL | Gon",
     "id_time": "WWL",
@@ -876,6 +860,22 @@
       {
         "tag": "#90R9Q2UP",
         "nome": "Stardragon"
+      }
+    ]
+  },
+  "#8CQURRJJY": {
+    "nome": "RNTX | Sergeant",
+    "id_time": "RNTX",
+    "nome_time": "REVENANT",
+    "regiao": "CN",
+    "jogadores": [
+      {
+        "tag": "#2U9P2YJRYP",
+        "nome": "RNTX | Walkthru"
+      },
+      {
+        "tag": "#2JYRU9QVUP",
+        "nome": "Kx"
       }
     ]
   },
