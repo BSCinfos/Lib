@@ -90,7 +90,7 @@ MAPEAMENTO_PLAYERS = {
         "#89UUQLJCC": {"nome": "FZ|Toridesu", "id_time": "FZ", "nome_time": "FRENZY", "regiao": "EA"},
         "#8G982C80L": {"nome": "WWL|Gon", "id_time": "WWL", "nome_time": "WWL", "regiao": "EA"},   
 # CN
-        "#GJCPGYL2V": {"nome": "AXR|Galaxy", "id_time": "AXR", "nome_time": "ACE XERO", "regiao": "CN"},
+        "#2V9P902P99": {"nome": "AXR|Coldrink", "id_time": "AXR", "nome_time": "ACE XERO", "regiao": "CN"},
         "#2V9PP02U98": {"nome": "TOC|X P R", "id_time": "TOC", "nome_time": "TOC", "regiao": "CN"},
         "#2QR09U8UJQ": {"nome": "TL|Engine", "id_time": "TL", "nome_time": "TOXIC LOTUS", "regiao": "CN"},
         "#8CQURRJJY": {"nome": "RNTX|Sergant", "id_time": "RNTX", "nome_time": "REVENANT", "regiao": "CN"},
