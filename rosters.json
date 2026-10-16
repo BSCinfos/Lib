@@ -831,11 +831,59 @@
       }
     ]
   },
+  "#GJCPGYL2V": {
+    "nome": "AXR|Galaxy",
+    "id_time": "AXR",
+    "nome_time": "ACE XERO",
+    "regiao": "CN",
+    "jogadores": [
+      {
+        "tag": "#GP2LYJ2YG",
+        "nome": "NBST丨⚽️ASRC⚽️"
+      },
+      {
+        "tag": "#2V9P9Q82YJ",
+        "nome": "AXR|David"
+      }
+    ]
+  },
+  "#2V9PP02U98": {
+    "nome": "TOC|X P R",
+    "id_time": "TOC",
+    "nome_time": "TOC",
+    "regiao": "CN",
+    "jogadores": [
+      {
+        "tag": "#2V9PP2YQ2P",
+        "nome": "TOC|JiangzeLove"
+      },
+      {
+        "tag": "#2V2LUU99QY",
+        "nome": "TOC|DynaMike"
+      }
+    ]
+  },
+  "#2QR09U8UJQ": {
+    "nome": "Engine",
+    "id_time": "TL",
+    "nome_time": "TOXIC LOTUS",
+    "regiao": "CN",
+    "jogadores": [
+      {
+        "tag": "#LQJJC9UY8",
+        "nome": "TOC"
+      },
+      {
+        "tag": "#90R9Q2UP",
+        "nome": "Stardragon"
+      }
+    ]
+  },
   "#9GGU9C9Y": {
     "nome": "Trâshant 🦁",
     "id_time": "SLG",
     "nome_time": "SLG",
-    "regiao": "EA",
+    "regiao": "CN",
     "jogadores": [
       {
         "tag": "#PGUPVR0J",
