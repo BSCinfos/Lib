@@ -88,12 +88,12 @@ MAPEAMENTO_PLAYERS = {
         "#28PU0P9L0": {"nome": "FL|Achapi", "id_time": "FL", "nome_time": "FENNEL", "regiao": "EA"},
         "#28VP0G808": {"nome": "INS|Koga", "id_time": "INS", "nome_time": "INSOMNIA", "regiao": "EA"},
         "#89UUQLJCC": {"nome": "FZ|Toridesu", "id_time": "FZ", "nome_time": "FRENZY", "regiao": "EA"},
-        "#8CQURRJJY": {"nome": "RNTX|Sergant", "id_time": "RNTX", "nome_time": "REVENANT", "regiao": "EA"},
         "#8G982C80L": {"nome": "WWL|Gon", "id_time": "WWL", "nome_time": "WWL", "regiao": "EA"},   
 # CN
         "#GJCPGYL2V": {"nome": "AXR|Galaxy", "id_time": "AXR", "nome_time": "ACE XERO", "regiao": "CN"},
         "#2V9PP02U98": {"nome": "TOC|X P R", "id_time": "TOC", "nome_time": "TOC", "regiao": "CN"},
         "#2QR09U8UJQ": {"nome": "TL|Engine", "id_time": "TL", "nome_time": "TOXIC LOTUS", "regiao": "CN"},
+        "#8CQURRJJY": {"nome": "RNTX|Sergant", "id_time": "RNTX", "nome_time": "REVENANT", "regiao": "CN"},
         "#9GGU9C9Y": {"nome": "SLG|Trashânt 🐯", "id_time": "SLG", "nome_time": "SLG", "regiao": "CN"},
 
 
