@@ -48,7 +48,7 @@ MAPEAMENTO_PLAYERS = {
         "#80VLPJCCC": {"nome": "CB|Tilo", "id_time": "CB", "nome_time": "CRECHE BRAWL", "regiao": "SA"},
         "#GJPVYUQG": {"nome": "QQQ|Deykonn", "id_time": "QQQ", "nome_time": "QUIERO QUE QUE", "regiao": "SA"},
         "#JCGGGQUP": {"nome": "NX|Sagaz", "id_time": "NX", "nome_time": "NOXIUM E-SPORTS", "regiao": "SA"},
-        "#YY9RY0UGC": {"nome": "awk hate you "id_time": "YX", "nome_time": "YRONIX", "regiao": "SA"},
+        "#YY9RY0UGC": {"nome": "awk hate you", "id_time": "YX", "nome_time": "YRONIX", "regiao": "SA"},
         "#G2G8VC02C": {"nome": "Dvzz🐐", "id_time": "RFA", "nome_time": "ROSTER F/A", "regiao": "SA"},
         "#8RCCV9RLC": {"nome": "🐦‍🔥BrawlerZin", "id_time": "IFA", "nome_time": "IRON FANGS", "regiao": "SA"},
 # NA
