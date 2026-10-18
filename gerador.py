@@ -48,9 +48,10 @@ MAPEAMENTO_PLAYERS = {
         "#80VLPJCCC": {"nome": "CB|Tilo", "id_time": "CB", "nome_time": "CRECHE BRAWL", "regiao": "SA"},
         "#GJPVYUQG": {"nome": "QQQ|Deykonn", "id_time": "QQQ", "nome_time": "QUIERO QUE QUE", "regiao": "SA"},
         "#9JVUGR2JG": {"nome": "RZ0|Xablau🎩", "id_time": "RZ0", "nome_time": "RISING ZERO", "regiao": "SA"},
-        "#LLVPJYV88": {"nome": "GE4R| Kirito🔥", "id_time": "GE4R", "nome_time": "RISING GE4R", "regiao": "SA"},
-        "#JCGGGQUP": {"nome": "NX| Sagaz", "id_time": "NX", "nome_time": "NOXIUM E-SPORTS", "regiao": "SA"},
-        "#8QUR8R2YR": {"nome": "YX| メCarlīNn🐦", "id_time": "YX", "nome_time": "YRONIX", "regiao": "SA"},
+        "#LLVPJYV88": {"nome": "GE4R|Kirito🔥", "id_time": "GE4R", "nome_time": "RISING GE4R", "regiao": "SA"},
+        "#JCGGGQUP": {"nome": "NX|Sagaz", "id_time": "NX", "nome_time": "NOXIUM E-SPORTS", "regiao": "SA"},
+        "#8QUR8R2YR": {"nome": "YX|メCarlīNn🐦", "id_time": "YX", "nome_time": "YRONIX", "regiao": "SA"},
+        "#9CPYUCGQC": {"nome": "ZRN|ice♥️clara", "id_time": "ZRN", "nome_time": "ZYRON", "regiao": "SA"},
         
 # NA
         "#LVRRYPV": {"nome": "KDS|Bobby", "id_time": "KDS", "nome_time": "KDS", "regiao": "NA"},
