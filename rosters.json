@@ -176,7 +176,7 @@
     ]
   },
   "#80VLPJCCC": {
-    "nome": "Tilo",
+    "nome": "Tilo XCX",
     "id_time": "CB",
     "nome_time": "CRECHE BRAWL",
     "regiao": "SA",
@@ -246,12 +246,12 @@
     "regiao": "SA",
     "jogadores": [
       {
-        "tag": "#YLG28GG2",
-        "nome": "Lkz"
-      },
-      {
         "tag": "#VPURQPQ0",
         "nome": "Jack Reacher"
+      },
+      {
+        "tag": "#YLG28GG2",
+        "nome": "Lkz"
       }
     ]
   },
