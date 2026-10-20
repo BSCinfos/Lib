@@ -12,7 +12,7 @@ window.BSC_USERS = [
     {username: "divulg",password: "staff"},
     {username: "KroosBS",password: "05092012"},
     {username: "Pudabs",password: "bscinfos"},
-    {username: "yronix",password: "bscinfos"},
+    {username: "awk",password: "bscinfos"},
     {username: "wl",password: "bscinfos"},
     {username: "zero",password: "bscinfos"},
     {username: "Brawlerzin",password: "13022013Ramom"},
