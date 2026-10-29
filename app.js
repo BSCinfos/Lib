@@ -108,10 +108,8 @@ function normalizarRostersAutomaticos(dados) {
         const nomeTime = String(registro.nome_time || 'TIME DESCONHECIDO').trim() || 'TIME DESCONHECIDO';
         const regiao = String(registro.regiao || 'SA').trim().toUpperCase();
 
-        // IDs de times podem se repetir entre regiões; mantenha CN separado.
-        const chaveTime = `${regiao}::${idTime}`;
-        if (!timesPorId.has(chaveTime)) {
-            timesPorId.set(chaveTime, {
+        if (!timesPorId.has(idTime)) {
+            timesPorId.set(idTime, {
                 id_time: idTime,
                 nome_time: nomeTime,
                 regiao,
@@ -119,7 +117,7 @@ function normalizarRostersAutomaticos(dados) {
             });
         }
 
-        const time = timesPorId.get(chaveTime);
+        const time = timesPorId.get(idTime);
         if (!time.nome_time || time.nome_time === 'TIME DESCONHECIDO') time.nome_time = nomeTime;
         if (!time.regiao) time.regiao = regiao;
 
@@ -143,7 +141,6 @@ function normalizarRostersAutomaticos(dados) {
         resultado[regiao]['TIMES AUTOMÁTICOS'].push({
             id_time: time.id_time,
             nome_time: time.nome_time,
-            regiao,
             jogadores: time.jogadores,
             tier: 'TIMES AUTOMÁTICOS'
         });
@@ -996,7 +993,7 @@ function renderizarSidebarTimes() {
         for (let r in CONFIGURACAO_MANUAL_TIMES) {
             for (let tier in CONFIGURACAO_MANUAL_TIMES[r]) {
                 if (!timesRegiao[tier]) timesRegiao[tier] = [];
-                CONFIGURACAO_MANUAL_TIMES[r][tier].forEach(t => { if (!timesRegiao[tier].find(e => e.id_time === t.id_time && (e.regiao || r) === (t.regiao || r))) timesRegiao[tier].push(t); });
+                CONFIGURACAO_MANUAL_TIMES[r][tier].forEach(t => { if (!timesRegiao[tier].find(e => e.id_time === t.id_time)) timesRegiao[tier].push(t); });
             }
         }
     } else { timesRegiao = CONFIGURACAO_MANUAL_TIMES[_REGIAO]; }
@@ -1063,7 +1060,7 @@ function renderizarDetalhesTime(time) {
             </div>
         </div>
         <div style="background:var(--bg-cards); padding:20px; border-radius:12px; border:1px solid var(--borda-destaque); margin-bottom:30px;"><h3 style="color:var(--texto); margin-bottom:15px; font-size:16px;">TOP 10 BRAWLERS DA EQUIPE</h3><div style="display:flex; flex-wrap:wrap; gap:10px;">${top10Time.length > 0 ? top10Time.map(([b, qtd]) => `<div style="background:var(--bg-paineis); padding:8px 12px; border-radius:6px; border:1px solid var(--borda-suave); display:flex; align-items:center; gap:10px;"><img src="brawlers/${formatImg(b)}.png" style="width:24px; border-radius:4px;" onerror="fallbackImagem(this,'brawlers/default.png')"><span style="font-weight:bold; font-size:13px;">${b}</span><span style="color:var(--texto-secundario); font-size:12px; font-weight:bold;">(${qtd})</span></div>`).join('') : '<span style="color:var(--texto-secundario); font-size:13px;">Sem dados suficientes no filtro.</span>'}</div></div>
-        <h3 style="color:var(--texto); margin-bottom:15px; font-size:16px;">JOGADORES (ROSTER OFICIAL)</h3><div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px;">
+        <h3 style="color:var(--texto); margin-bottom:15px; font-size:16px;">JOGADORES (ROSTER OFICIAL)</h3><div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
     `;
 
 
@@ -1073,196 +1070,8 @@ function renderizarDetalhesTime(time) {
         let top5 = Object.entries(bJ).sort((a,b) => b[1] - a[1]).slice(0,5);
         html += `<div style="background:var(--bg-cards); padding:20px; border-radius:12px; border:1px solid var(--borda-destaque);"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;"><h4 style="color:var(--accent-purple); font-size:18px;">${jogador.nick}</h4><span style="font-size:10px; background:#000; padding:3px 6px; border-radius:4px; color:var(--texto-secundario);">${jogador.tag}</span></div><p style="color:var(--texto-secundario); font-size:12px; margin-bottom:20px; font-weight:bold;">Total de Picks: ${pT}</p><div style="display:flex; flex-direction:column; gap:8px;">${top5.length > 0 ? top5.map(([b, qtd], idx) => `<div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-paineis); padding:8px 12px; border-radius:6px; border:1px solid var(--borda-suave);"><div style="display:flex; align-items:center; gap:10px;"><span style="font-weight:900; color:var(--texto-secundario); font-size:11px;">#${idx+1}</span><img src="brawlers/${formatImg(b)}.png" style="width:24px; border-radius:4px;" onerror="fallbackImagem(this,'brawlers/default.png')"><span style="font-size:13px; font-weight:bold;">${b}</span></div><span style="font-size:12px; color:var(--texto-secundario); font-weight:bold;">${qtd}</span></div>`).join('') : '<span style="color:var(--texto-secundario); font-size:12px;">Sem picks no filtro.</span>'}</div></div>`;
     });
-    // Fecha a grade dos três jogadores antes de inserir as estatísticas.
-    // Assim os jogadores ficam alinhados em uma linha e as abas ocupam a linha abaixo.
-    html += `</div>`;
-
-    // Painel de desempenho do time: modos, mapas e partidas recentes.
-    // Cada id_partida distinto é contado uma única vez para evitar duplicar sets pelos picks dos jogadores.
-    const partidasUnicas = new Map();
-    partidasDoTime.forEach(r => {
-        const id = String(r.id_partida || '');
-        if (!id || partidasUnicas.has(id)) return;
-        const grupo = (typeof dadosFiltrados !== 'undefined' ? dadosFiltrados : []).filter(x => String(x.id_partida || '') === id);
-        const doTime = grupo.filter(x => String(x.id_time) === String(time.id_time));
-        if (!doTime.length) return;
-        const win = Number(doTime[0].win) === 1 || String(doTime[0].win).toLowerCase() === 'true';
-        const modo = String(doTime[0].modo || 'Desconhecido');
-        const mapa = String(doTime[0].mapa || 'Desconhecido');
-        const data = parseDateBR(doTime[0].data_adicao) || 0;
-        const adversarios = grupo.filter(x => String(x.id_time) !== String(time.id_time));
-        const registroAdversario = adversarios[0] || {};
-        const nomeAdversario = registroAdversario.nome_time || 'Adversário não identificado';
-        const idAdversario = registroAdversario.id_time || ''; 
-        const picksTime = [...new Set(doTime.map(x => String(x.pick || '').trim().toUpperCase()).filter(Boolean))].slice(0, 3);
-        const picksAdversario = [...new Set(adversarios.map(x => String(x.pick || '').trim().toUpperCase()).filter(Boolean))].slice(0, 3);
-        partidasUnicas.set(id, { id, win, modo, mapa, data, nomeAdversario, idAdversario, picksTime, picksAdversario });
-    });
-    const jogos = [...partidasUnicas.values()].sort((a,b) => b.data - a.data);
-    const chaveImagem = valor => {
-        try { return formatImg(String(valor || '').trim()); } catch (_) {
-            return String(valor || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '');
-        }
-    };
-    const imgModo = modo => `<img src="element/modes/${chaveImagem(modo)}.png" alt="${modo}" title="${modo}" style="width:24px;height:24px;object-fit:contain;vertical-align:middle" onerror="this.style.display='none'">`;
-    const imgMapa = mapa => `<img src="element/maps/${chaveImagem(mapa)}.png" alt="${mapa}" title="${mapa}" style="width:34px;height:34px;object-fit:cover;border-radius:5px;vertical-align:middle" onerror="this.style.display='none'">`;
-    const imgBrawler = b => `<img src="element/brawlers/${chaveImagem(b)}.png" alt="${b}" title="${b}" style="width:29px;height:29px;object-fit:contain;border-radius:5px" onerror="this.onerror=null;this.src='brawlers/${chaveImagem(b)}.png';this.onerror=function(){this.style.display='none'}">`;
-    const modosStats = {};
-    const mapasStats = {};
-    jogos.forEach(j => {
-        if (!modosStats[j.modo]) modosStats[j.modo] = { played: 0, wins: 0, losses: 0 };
-        modosStats[j.modo].played++;
-        modosStats[j.modo][j.win ? 'wins' : 'losses']++;
-        if (!mapasStats[j.mapa]) mapasStats[j.mapa] = { played: 0, wins: 0, modo: j.modo };
-        mapasStats[j.mapa].played++;
-        if (j.win) mapasStats[j.mapa].wins++;
-    });
-    const pickStatsFor = (listaJogos, slot) => {
-        const stats = {};
-        listaJogos.forEach(j => { const b = (j.picksTime || [])[slot]; if (!b) return; if (!stats[b]) stats[b] = { played: 0, wins: 0 }; stats[b].played++; if (j.win) stats[b].wins++; });
-        return Object.entries(stats).map(([brawler, st]) => ({ brawler, ...st, pct: st.played ? st.wins / st.played * 100 : 0 })).sort((a,b) => b.pct-a.pct || b.played-a.played).slice(0,5);
-    };
-    const pickStatsRows = (listaJogos, slot) => {
-        const stats = pickStatsFor(listaJogos, slot);
-        return stats.length ? stats.map((x,i) => `<div class="team-pick-stat-row"><span class="team-pick-stat-name"><b>${i+1}.</b>${imgBrawler(x.brawler)}<strong>${x.brawler}</strong></span><span>${x.played} jogos</span><span>${x.wins} vitórias</span><strong>${x.pct.toFixed(1)}%</strong></div>`).join('') : '<p class="team-empty">Sem dados suficientes para esta ordem de pick.</p>';
-    };
-    const modoCards = Object.entries(modosStats).sort((a,b) => b[1].played - a[1].played).map(([modo, st]) => {
-        const pct = st.played ? Math.round(st.wins / st.played * 100) : 0;
-        const modeAttr = String(modo).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
-        return `<article class="team-mode-stat team-mode-stat-clickable" role="button" tabindex="0" data-mode="${modeAttr}" onclick="window.bscShowModeDetail(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.bscShowModeDetail(this)}"><div class="team-mode-title">${imgModo(modo)}<b>${modo}</b><span class="team-mode-open-hint">VER DETALHES ↗</span></div><div class="team-mode-chart" style="--win-pct:${pct}%"><div><strong>${st.played}</strong><small>sets</small></div></div><div class="team-mode-numbers"><span>Jogados <b>${st.played}</b></span><span style="color:#47df91">Ganhos <b>${st.wins}</b></span><span style="color:#ff5277">Perdidos <b>${st.losses}</b></span></div></article>`;
-    }).join('');
-    const mapaRows = (melhores) => Object.entries(mapasStats).map(([mapa, st]) => ({ mapa, ...st, pct: st.played ? st.wins / st.played * 100 : 0 }))
-        .filter(x => x.played > 0)
-        .sort((a,b) => melhores ? (b.pct-a.pct || b.played-a.played) : (a.pct-b.pct || b.played-a.played))
-        .slice(0,5).map((x,i) => `<div class="team-map-row"><span class="team-map-name">${imgMapa(x.mapa)}<span>${i+1}. ${x.mapa}<small class="team-map-mode-logo" title="${x.modo}">${imgModo(x.modo)}</small></span></span><span>${x.played}</span><span>${x.wins}</span><span><b>${x.pct.toFixed(1)}%</b><i><em style="width:${x.pct}%"></em></i></span></div>`).join('') || '<p class="team-empty">Sem dados de mapas para os filtros atuais.</p>';
-    // RECENT BATTLES: cinco scrims mais recentes do time, agrupadas por série.
-    const scrimsRecentesTime = (Array.isArray(window.currentScrims) ? window.currentScrims : [])
-        .filter(s => String(s.tAId) === String(time.id_time) || String(s.tBId) === String(time.id_time))
-        .sort((a,b) => (Number(b.ultimoUpdate || b.inicio) || 0) - (Number(a.ultimoUpdate || a.inicio) || 0))
-        .slice(0,5);
-    const formatarDataScrim = partida => {
-        const ts = Number(partida && partida.timestamp) || 0;
-        return ts ? new Date(ts).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'})
-                  : ((partida && partida.dataFormatada) || 'Data indisponível');
-    };
-    const renderJogoScrimTime = (scrim, round) => {
-        const primeiroSet = round.firstSet || (round.sets && round.sets[0]) || {};
-        const meuTimeA = String(scrim.tAId) === String(time.id_time);
-        const meuId = String(time.id_time);
-        const venceuMeuTime = String(round.vencedor) === meuId;
-        const picksA = primeiroSet.picksA || [];
-        const picksB = primeiroSet.picksB || [];
-        const meuPicks = meuTimeA ? picksA : picksB;
-        const advPicks = meuTimeA ? picksB : picksA;
-        const adversarioId = meuTimeA ? scrim.tBId : scrim.tAId;
-        const adversarioNome = meuTimeA ? scrim.tBNome : scrim.tANome;
-        const picksHtml = arr => (arr || []).length ? arr.map(imgBrawler).join('') : '<small>Sem picks</small>';
-        const modoJogo = round.modo || primeiroSet.modo || '';
-        const mapaJogo = round.mapa || primeiroSet.mapa || '';
-        return `<div class="team-battle-row">
-            <span class="team-battle-date">${formatarDataScrim(primeiroSet)}</span>
-            <span class="team-battle-mode" title="${modoJogo}">${imgModo(modoJogo)}</span>
-            <span class="team-battle-map" title="${mapaJogo}">${imgMapa(mapaJogo)}<small>${mapaJogo}</small></span>
-            <span class="team-battle-picks" title="${time.nome_time}"><span>${picksHtml(meuPicks)}</span></span>
-            <img class="team-battle-team-logo" src="${teamLogoUrl(time.id_time)}" alt="${time.nome_time}" title="${time.nome_time}" onerror="${teamLogoOnError(time.id_time)}">
-            <b class="team-battle-vs">VS</b>
-            <img class="team-battle-team-logo" src="${teamLogoUrl(adversarioId)}" alt="${adversarioNome}" title="${adversarioNome}" onerror="${teamLogoOnError(adversarioId)}">
-            <span class="team-battle-picks" title="${adversarioNome}"><span>${picksHtml(advPicks)}</span></span>
-            <b class="team-battle-result ${venceuMeuTime ? 'is-win' : 'is-loss'}">${venceuMeuTime ? 'VITÓRIA' : 'DERROTA'}</b>
-        </div>`;
-    };
-    const recentRows = scrimsRecentesTime.map((scrim, index) => {
-        const meuTimeA = String(scrim.tAId) === String(time.id_time);
-        const adversarioId = meuTimeA ? scrim.tBId : scrim.tAId;
-        const adversarioNome = meuTimeA ? scrim.tBNome : scrim.tANome;
-        const meuScore = meuTimeA ? Number(scrim.scoreA || 0) : Number(scrim.scoreB || 0);
-        const advScore = meuTimeA ? Number(scrim.scoreB || 0) : Number(scrim.scoreA || 0);
-        const jogosDaScrim = [...(scrim.roundsMD3 || [])].sort((a,b) =>
-            (Number((a.firstSet || {}).timestamp) || 0) - (Number((b.firstSet || {}).timestamp) || 0));
-        const primeiro = jogosDaScrim[0] && jogosDaScrim[0].firstSet;
-        const ultimo = jogosDaScrim[jogosDaScrim.length - 1] && jogosDaScrim[jogosDaScrim.length - 1].firstSet;
-        const periodo = `Primeiro jogo: ${formatarDataScrim(primeiro)} · Último jogo: ${formatarDataScrim(ultimo)}`;
-        const painelId = `team-scrim-${chaveImagem(time.id_time)}-${index}`;
-        const jogosHtml = jogosDaScrim.map(round => renderJogoScrimTime(scrim, round)).join('') ||
-            '<p class="team-empty">Esta scrim não possui jogos detalhados.</p>';
-        return `<section class="team-scrim-group">
-            <button type="button" class="team-scrim-summary" aria-expanded="false" aria-controls="${painelId}" onclick="window.bscToggleTeamScrim(this)">
-                <span class="team-scrim-side"><img src="${teamLogoUrl(time.id_time)}" alt="${time.nome_time}" onerror="${teamLogoOnError(time.id_time)}"><strong>${time.nome_time}</strong></span>
-                <strong class="team-scrim-score">${meuScore} - ${advScore}</strong>
-                <span class="team-scrim-side is-opponent"><img src="${teamLogoUrl(adversarioId)}" alt="${adversarioNome}" onerror="${teamLogoOnError(adversarioId)}"><strong>${adversarioNome}</strong></span>
-                <small>${periodo}</small><span class="team-scrim-count">${jogosDaScrim.length} jogos⌄</span>
-            </button>
-            <div class="team-scrim-games" id="${painelId}" hidden>${jogosHtml}</div>
-        </section>`;
-    }).join('') || '<p class="team-empty">Nenhuma scrim recente encontrada para este time.</p>';
-    const recentRowsForMode = j => {
-        const dataTxt = j.data ? new Date(j.data).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : 'Data indisponível';
-        const picks = arr => arr.length ? arr.map(imgBrawler).join('') : '<small>Sem picks</small>';
-        return `<div class="team-battles-box"><div class="team-battle-row"><span class="team-battle-date">${dataTxt}</span><span class="team-battle-mode" title="${j.modo}">${imgModo(j.modo)}</span><span class="team-battle-map" title="${j.mapa}">${imgMapa(j.mapa)}<small>${j.mapa}</small></span><span class="team-battle-picks" title="${time.nome_time}"><span>${picks(j.picksTime)}</span></span><img class="team-battle-team-logo" src="${teamLogoUrl(time.id_time)}" alt="${time.nome_time}" title="${time.nome_time}" onerror="${teamLogoOnError(time.id_time)}"><b class="team-battle-vs">VS</b><img class="team-battle-team-logo" src="${teamLogoUrl(j.idAdversario)}" alt="${j.nomeAdversario}" title="${j.nomeAdversario}" onerror="${teamLogoOnError(j.idAdversario)}"><span class="team-battle-picks" title="${j.nomeAdversario}"><span>${picks(j.picksAdversario)}</span></span><b class="team-battle-result ${j.win ? 'is-win' : 'is-loss'}">${j.win ? 'VITÓRIA' : 'DERROTA'}</b></div></div>`;
-    };
-    const modeDetailPanels = Object.keys(modosStats).map(modo => {
-        const modeGames = jogos.filter(j => j.modo === modo);
-        const modeMaps = {};
-        modeGames.forEach(j => { if (!modeMaps[j.mapa]) modeMaps[j.mapa] = {played:0,wins:0}; modeMaps[j.mapa].played++; if(j.win) modeMaps[j.mapa].wins++; });
-        const ranks = Object.entries(modeMaps).map(([mapa,st])=>({mapa,...st,pct:st.played?st.wins/st.played*100:0}));
-        const best = [...ranks].sort((a,b)=>b.pct-a.pct||b.played-a.played)[0];
-        const worst = [...ranks].sort((a,b)=>a.pct-b.pct||b.played-a.played)[0];
-        const recent = modeGames.slice(0,5);
-        const modeAttr = String(modo).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
-        return `<div class="team-mode-detail" data-mode-detail="${modeAttr}" hidden><div class="team-mode-detail-head"><h3>${imgModo(modo)} ${modo}</h3><button type="button" onclick="window.bscHideModeDetail(this)">FECHAR ×</button></div><div class="team-mode-detail-stats"><div><small>Melhor mapa</small><strong>${best ? `${imgMapa(best.mapa)} ${best.mapa}` : 'Sem dados'}</strong><span>${best ? `${best.pct.toFixed(1)}% de vitórias (${best.wins}/${best.played})` : ''}</span></div><div><small>Pior mapa</small><strong>${worst ? `${imgMapa(worst.mapa)} ${worst.mapa}` : 'Sem dados'}</strong><span>${worst ? `${worst.pct.toFixed(1)}% de vitórias (${worst.wins}/${worst.played})` : ''}</span></div></div><div class="team-mode-detail-picks"><section><h4>MELHORES FIRST PICKS</h4>${pickStatsRows(modeGames,0)}</section><section><h4>MELHORES LAST PICKS</h4>${pickStatsRows(modeGames,2)}</section></div><div class="team-mode-detail-recent"><h4>PARTIDAS MAIS RECENTES NESTE MODO</h4>${recent.length ? recent.map(recentRowsForMode).join('') : '<p class="team-empty">Sem partidas neste modo.</p>'}</div></div>`;
-    }).join('');
-
-    html += `<style>
-    @media(max-width:1050px){#painel-info-time > div > div[style*="grid-template-columns:repeat(3"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
-    @media(max-width:650px){#painel-info-time > div > div[style*="grid-template-columns:repeat(3"]{grid-template-columns:minmax(0,1fr)!important}.team-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.team-tab{white-space:normal}}
-    .team-scrim-group{border:1px solid var(--borda-destaque,#30313b);border-radius:10px;overflow:hidden;margin:10px 0;background:var(--bg-cards,#17181f)}
-    .team-scrim-summary{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;padding:12px 14px;background:transparent;border:0;color:inherit;text-align:left;cursor:pointer}
-    .team-scrim-side{display:flex;align-items:center;gap:9px;min-width:0;font-size:12px}
-    .team-scrim-side img{width:34px;height:34px;object-fit:contain;flex-shrink:0}
-    .team-scrim-side strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .team-scrim-side.is-opponent{flex-direction:row-reverse;text-align:right}
-    .team-scrim-score{font-size:21px;white-space:nowrap}
-    .team-scrim-summary small{grid-column:1/3;color:var(--texto-secundario,#aaa);font-size:10px}
-    .team-scrim-count{grid-column:3;text-align:right;color:var(--accent-purple,#d000ff);font-size:10px;font-weight:800}
-    .team-scrim-games{padding:0 10px 10px;border-top:1px solid var(--borda-destaque,#30313b)}
-    .team-scrim-games .team-battle-row{margin-top:8px}
-    .team-mode-detail-recent .team-battles-box{margin:8px 0}
-    @media(max-width:700px){.team-scrim-summary{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px;padding:10px}.team-scrim-side{font-size:10px}.team-scrim-side img{width:27px;height:27px}.team-scrim-score{font-size:17px}.team-scrim-summary small{font-size:9px}}
-
-        .team-analytics{width:100%;min-width:0;box-sizing:border-box;margin:26px 0 24px;color:var(--texto,#f5f5f7)}.team-tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--borda-destaque,#30313a);margin-bottom:14px}.team-tab{background:var(--bg-paineis,#17181e);color:#c9c9d6;border:1px solid var(--borda-destaque,#30313a);padding:11px 15px;border-radius:9px 9px 0 0;font-weight:800;cursor:pointer}.team-tab.active{background:#8500dc;color:#fff;border-color:#b72bff}.team-tab-panel{display:none}.team-tab-panel.active{display:block}.team-mode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.team-mode-stat,.team-map-box,.team-battles-box{background:var(--bg-cards,#15161c);border:1px solid var(--borda-destaque,#30313a);border-radius:10px;padding:14px}.team-mode-title{display:flex;align-items:center;gap:8px;text-transform:uppercase;font-size:12px}.team-mode-chart{width:94px;height:94px;border-radius:50%;margin:14px auto;background:conic-gradient(#47df91 0 var(--win-pct),#ff5277 var(--win-pct) 100%);display:grid;place-items:center}.team-mode-chart>div{width:67px;height:67px;border-radius:50%;background:var(--bg-cards,#15161c);display:flex;flex-direction:column;align-items:center;justify-content:center}.team-mode-chart strong{font-size:21px}.team-mode-chart small{font-size:10px;color:#aaa}.team-mode-numbers{display:grid;gap:7px;font-size:12px}.team-mode-numbers span{display:flex;justify-content:space-between}.team-map-columns,.team-map-row{display:grid;grid-template-columns:minmax(150px,2fr) 42px 52px minmax(90px,1fr);gap:8px;align-items:center}.team-map-columns{font-size:10px;color:#aaa;padding:5px 0 10px}.team-map-row{padding:9px 0;border-top:1px solid #282a33;font-size:12px}.team-map-name{display:flex;align-items:center;gap:8px;min-width:0}.team-map-name>span{overflow-wrap:anywhere}.team-map-name small{display:flex;align-items:center;color:#9a9aaa;font-size:10px;margin-top:3px}.team-map-mode-logo img{width:20px!important;height:20px!important}.team-map-row i{display:block;height:4px;background:#292b35;border-radius:5px;margin-top:5px;overflow:hidden}.team-map-row em{display:block;height:100%;background:#47df91}.team-battles-box{overflow-x:auto}.team-battle-row{min-width:900px;display:grid;grid-template-columns:105px 32px 115px minmax(95px,1fr) 42px 24px 42px minmax(95px,1fr) 72px;gap:7px;align-items:center;padding:10px 0;border-bottom:1px solid #282a33;font-size:11px}.team-battle-date{color:#aaa}.team-battle-mode,.team-battle-map{display:flex;align-items:center;gap:6px}.team-battle-mode small,.team-battle-map small{overflow-wrap:anywhere}.team-battle-picks>small{display:block;color:#aaa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}.team-battle-picks>span{display:flex;gap:3px}.team-battle-row>.team-battle-picks:nth-child(4){justify-self:end}.team-battle-row>.team-battle-picks:nth-child(4)>span{justify-content:flex-end}.team-battle-vs{color:#aaa;text-align:center}.team-battle-team-logo{width:38px;height:38px;object-fit:contain;border-radius:6px;background:#101116;border:1px solid #30313a;padding:3px;box-sizing:border-box;justify-self:center}.team-battle-result{font-size:10px;text-align:center;padding:5px 3px;border-radius:5px}.team-battle-result.is-win{color:#47df91;border:1px solid #16834e}.team-battle-result.is-loss{color:#ff5277;border:1px solid #a32d49}.team-empty{color:#999;font-size:12px;padding:12px 0}.team-mode-stat-clickable{cursor:pointer;transition:transform .15s,border-color .15s}.team-mode-stat-clickable:hover,.team-mode-stat-clickable:focus{transform:translateY(-2px);border-color:#b72bff;outline:none}.team-mode-open-hint{margin-left:auto;font-size:9px;color:#aaa;white-space:nowrap}.team-mode-detail{margin-top:14px;padding:16px;background:var(--bg-cards,#15161c);border:1px solid var(--accent-purple,#8500dc);border-radius:10px}.team-mode-detail[hidden]{display:none}.team-mode-detail-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.team-mode-detail-head h3{display:flex;align-items:center;gap:8px;margin:0;text-transform:uppercase}.team-mode-detail-head h3 img{width:28px;height:28px;object-fit:contain}.team-mode-detail-head button{background:transparent;color:#c9c9d6;border:1px solid #555;padding:7px 10px;border-radius:6px;cursor:pointer}.team-mode-detail-stats,.team-mode-detail-picks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.team-mode-detail-stats>div,.team-mode-detail-picks>section{padding:12px;border:1px solid #30313a;border-radius:8px;min-width:0}.team-mode-detail-stats small{display:block;color:#aaa;margin-bottom:8px}.team-mode-detail-stats strong{display:flex;align-items:center;gap:7px}.team-mode-detail-stats strong img{width:32px;height:32px;object-fit:cover;border-radius:4px}.team-mode-detail-stats span{display:block;color:#aaa;font-size:11px;margin-top:6px}.team-mode-detail-picks h4,.team-mode-detail-recent h4{font-size:12px;color:#c9a0ff;margin:0 0 10px}.team-pick-stat-row{display:grid;grid-template-columns:minmax(100px,1fr) auto auto 48px;gap:8px;align-items:center;padding:7px 0;border-top:1px solid #282a33;font-size:10px}.team-pick-stat-name{display:flex;align-items:center;gap:5px;min-width:0}.team-pick-stat-name img{width:26px;height:26px;object-fit:contain}.team-pick-stat-name strong{overflow:hidden;text-overflow:ellipsis}.team-mode-detail-recent{margin-top:15px}.team-mode-detail-recent .team-battles-box{padding:0;border:0}.team-mode-detail-recent .team-battle-row{min-width:900px}@media(max-width:700px){.team-mode-detail-stats,.team-mode-detail-picks{grid-template-columns:minmax(0,1fr)}.team-pick-stat-row{grid-template-columns:minmax(90px,1fr) auto 42px}.team-pick-stat-row>span:nth-child(3){display:none}}@media(max-width:1000px){.team-mode-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.team-mode-grid{grid-template-columns:minmax(0,1fr)}.team-tab{font-size:10px;padding:9px 8px}}
-    </style><section class="team-analytics"><nav class="team-tabs"><button class="team-tab active" onclick="window.bscTeamTab(this,'team-modes-${chaveImagem(time.id_time)}')">ESTATÍSTICAS POR MODO</button><button class="team-tab" onclick="window.bscTeamTab(this,'team-best-${chaveImagem(time.id_time)}')">MELHORES MAPAS</button><button class="team-tab" onclick="window.bscTeamTab(this,'team-worst-${chaveImagem(time.id_time)}')">PIORES MAPAS</button><button class="team-tab" onclick="window.bscTeamTab(this,'team-picks-${chaveImagem(time.id_time)}')">MELHORES PICKS</button><button class="team-tab" onclick="window.bscTeamTab(this,'team-recent-${chaveImagem(time.id_time)}')">RECENT BATTLES</button></nav><div id="team-modes-${chaveImagem(time.id_time)}" class="team-tab-panel active"><div class="team-mode-grid">${modoCards || '<p class="team-empty">Sem partidas registradas por modo.</p>'}</div>${modeDetailPanels}</div><div id="team-best-${chaveImagem(time.id_time)}" class="team-tab-panel"><div class="team-map-box"><h3>🏆 MELHORES MAPAS</h3><div class="team-map-columns"><span>MAPA / MODO</span><span>SETS</span><span>GANHOS</span><span>APROVEITAMENTO</span></div>${mapaRows(true)}</div></div><div id="team-worst-${chaveImagem(time.id_time)}" class="team-tab-panel"><div class="team-map-box"><h3>📉 PIORES MAPAS</h3><div class="team-map-columns"><span>MAPA / MODO</span><span>SETS</span><span>GANHOS</span><span>APROVEITAMENTO</span></div>${mapaRows(false)}</div></div><div id="team-picks-${chaveImagem(time.id_time)}" class="team-tab-panel"><div class="team-mode-detail-picks"><section><h3>🏆 MELHORES FIRST PICKS</h3>${pickStatsRows(jogos,0)}</section><section><h3>🏆 MELHORES LAST PICKS</h3>${pickStatsRows(jogos,2)}</section></div><p class="team-empty">Cálculo baseado no primeiro e no terceiro pick registrados por partida, preservando a ordem dos dados de origem.</p></div><div id="team-recent-${chaveImagem(time.id_time)}" class="team-tab-panel"><div class="team-battles-box"><h3>RECENT BATTLES</h3>${recentRows}</div></div></section>`;
-
     if(painel) painel.innerHTML = html + `</div>`;
 }
-
-window.bscToggleTeamScrim = function(button) {
-    const panelId = button && button.getAttribute('aria-controls');
-    const panel = panelId ? document.getElementById(panelId) : null;
-    if (!panel) return;
-    const abrir = panel.hidden;
-    panel.hidden = !abrir;
-    button.setAttribute('aria-expanded', abrir ? 'true' : 'false');
-};
-
-window.bscTeamTab = function(button, panelId) {
-    const root = button && button.closest('.team-analytics');
-    if (!root) return;
-    root.querySelectorAll('.team-tab').forEach(tab => tab.classList.toggle('active', tab === button));
-    root.querySelectorAll('.team-tab-panel').forEach(panel => panel.classList.toggle('active', panel.id === panelId));
-};
-
-window.bscShowModeDetail = function(card) {
-    const root = card && card.closest('.team-tab-panel');
-    if (!root) return;
-    const mode = card.getAttribute('data-mode');
-    root.querySelectorAll('.team-mode-detail').forEach(panel => { panel.hidden = panel.getAttribute('data-mode-detail') !== mode; });
-    const detail = Array.from(root.querySelectorAll('.team-mode-detail')).find(panel => panel.getAttribute('data-mode-detail') === mode);
-    if (detail) detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-};
-window.bscHideModeDetail = function(button) {
-    const detail = button && button.closest('.team-mode-detail');
-    if (detail) detail.hidden = true;
-};
 
 window.registrarTimeCustom = function(idAntigo) {
     let inputId = document.getElementById('custom-id'), inputName = document.getElementById('custom-name'), selectTier = document.getElementById('custom-tier');
@@ -1354,13 +1163,8 @@ function renderizarListaScrims(scrimsOriginais) {
         lista.innerHTML = `<p style="padding:20px; color:var(--texto-secundario); font-weight:bold; grid-column:1/-1; text-align:center;">Nenhuma scrim encontrada no filtro atual.</p>`; return;
     }
 
-    // Exibe TODAS as scrims que correspondem aos filtros, da mais recente para a mais antiga.
-    scrims = [...scrims].sort((a,b) => (b.ultimoUpdate || b.inicio || 0) - (a.ultimoUpdate || a.inicio || 0));
     scrims.forEach((scrim) => {
         let div = document.createElement('div'); div.className = 'scrim-card';
-        const jogosOrdenados = [...(scrim.sets || [])].sort((a,b) => (a.timestamp || 0) - (b.timestamp || 0));
-        const dataJogo = jogo => jogo && jogo.timestamp ? new Date(jogo.timestamp).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}) : (jogo && jogo.dataFormatada) || 'Data indisponível';
-        const periodoScrim = `Primeiro jogo: ${dataJogo(jogosOrdenados[0])} · Último jogo: ${dataJogo(jogosOrdenados[jogosOrdenados.length-1])}`;
         let isTournament = scrim.sets.some(r => r.tipo === 'tournament') || scrim.temMatcherino;
         let icon = isTournament ? `<img src="element/play/matcherino.png" style="position:absolute; top:10px; right:12px; width:22px; height:22px; object-fit:contain;" onerror="this.style.display='none'" title="Torneio">` : '';
 
@@ -1381,7 +1185,7 @@ function renderizarListaScrims(scrimsOriginais) {
                 <img src="${teamLogoUrl(scrim.tBId)}" class="scrim-team-logo" style="width:42px; height:42px; object-fit:contain; border-radius:6px; flex-shrink:0;" onerror="${teamLogoOnError(scrim.tBId)}">
                 <span style="font-weight:900; font-size:15px; color:${corB}; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${scrim.tBNome}">${scrim.tBNome}</span>
             </div>
-            <div title="${periodoScrim}" style="position:absolute; bottom:10px; left:18px; right:115px; font-size:10px; color:var(--texto-secundario); font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${periodoScrim}</div><div style="position:absolute; bottom:10px; right:18px; font-size:11px; color:var(--texto-secundario); font-weight:bold;">Rounds: ${scrim.roundsMD3.length}</div>
+            <div style="position:absolute; bottom:10px; left:18px; font-size:11px; color:var(--texto-secundario); font-weight:bold;">${scrim.dataFormatada}</div><div style="position:absolute; bottom:10px; right:18px; font-size:11px; color:var(--texto-secundario); font-weight:bold;">Rounds: ${scrim.roundsMD3.length}</div>
         `;
         div.onclick = () => renderizarDetalheScrim(scrim);
         lista.appendChild(div);
@@ -2095,7 +1899,7 @@ function renderizarDetalhesMapa(modo, mapa) {
                         <thead><tr><th style="text-align:left;">Time (Clique)</th><th>Partidas</th><th>W</th><th>WR%</th></tr></thead>
                         <tbody>
                             ${arrTimes.map(t => `
-                                <tr style="cursor:pointer;" onclick="mostrarHistoricoTimeMapa('${String(t.id).replace(/'/g, "\\'")}', '${String(t.nome).replace(/'/g, "\\'")}', '${String(modo).replace(/'/g, "\\'")}')" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                                <tr style="cursor:pointer;" onclick="mostrarHistoricoTimeMapa('${t.id}', '${t.nome}')" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
                                     <td style="text-align:left; font-weight:bold; display:flex; align-items:center; gap:8px;">
                                         <img src="${teamLogoUrl(t.id)}" style="width:20px; border-radius:4px;" onerror="this.onerror=null; this.src='${teamLogoFallback(t.id)}';">
                                         ${t.nome}
@@ -2128,77 +1932,32 @@ function renderizarDetalhesMapa(modo, mapa) {
     tornarTabelasOrdenaveis();
 }
 
-// Mostra as 5 scrims mais recentes do time dentro do modo selecionado.
-function mostrarHistoricoTimeMapa(idTime, nomeTime, modoSelecionado) {
+// Função para exibir as últimas 3 comps de um time ao clicar nele na tabela
+function mostrarHistoricoTimeMapa(idTime, nomeTime) {
     const modal = document.getElementById('modal-historico-time-mapa');
     const titulo = document.getElementById('modal-historico-titulo');
     const conteudo = document.getElementById('modal-historico-conteudo');
-    if (!modal || !titulo || !conteudo) return;
+    
+    if(!modal || !window.historicoTimesMapa) return;
+    
+    let historico = window.historicoTimesMapa[idTime] || [];
+    let ultimas3 = historico.slice(0, 3); // Pega apenas as 3 mais recentes
 
-    const escapar = valor => String(valor == null ? '' : valor).replace(/[&<>"']/g, c => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[c]));
-    const modoNorm = String(modoSelecionado || '').trim().toLowerCase();
-    const scrims = Array.isArray(window.currentScrims) ? window.currentScrims : [];
-
-    const historico = scrims.map(scrim => {
-        const setsDoModo = (scrim.sets || []).filter(partida =>
-            String(partida.modo || '').trim().toLowerCase() === modoNorm &&
-            (String(partida.tAId) === String(idTime) || String(partida.tBId) === String(idTime))
-        );
-        if (!setsDoModo.length) return null;
-
-        const timestamps = setsDoModo.map(p => Number(p.timestamp) || 0);
-        const ultimoTimestamp = Math.max(...timestamps);
-        const maisRecente = setsDoModo.reduce((a, b) =>
-            (Number(a.timestamp) || 0) >= (Number(b.timestamp) || 0) ? a : b
-        );
-        const adversario = String(scrim.tAId) === String(idTime) ? scrim.tBNome : scrim.tANome;
-        const vitorias = setsDoModo.filter(p => String(p.vencedor) === String(idTime)).length;
-        const derrotas = setsDoModo.length - vitorias;
-
-        return {
-            adversario: adversario || 'Adversário',
-            vitorias,
-            derrotas,
-            total: setsDoModo.length,
-            ultimoTimestamp,
-            data: maisRecente.dataFormatada || scrim.dataFormatada || '',
-            partidas: setsDoModo.slice().sort((a, b) => (Number(b.timestamp) || 0) - (Number(a.timestamp) || 0))
-        };
-    }).filter(Boolean).sort((a, b) => b.ultimoTimestamp - a.ultimoTimestamp).slice(0, 5);
-
-    titulo.textContent = `ÚLTIMAS 5 SCRIMS DE ${String(nomeTime || 'TIME').toUpperCase()} — ${String(modoSelecionado || 'MODO').toUpperCase()}`;
-    conteudo.style.display = 'grid';
-    conteudo.style.gridTemplateColumns = 'repeat(auto-fit, minmax(170px, 1fr))';
-    conteudo.style.gap = '12px';
-    conteudo.style.overflowX = 'visible';
-
-    if (!historico.length) {
-        conteudo.innerHTML = `<p style="font-size:12px;color:gray;">Nenhuma scrim recente encontrada para este time neste modo.</p>`;
+    titulo.innerText = `ÚLTIMAS 3 COMPS DE ${nomeTime.toUpperCase()}`;
+    
+    if(ultimas3.length === 0) {
+        conteudo.innerHTML = `<p style="font-size:12px; color:gray;">Nenhum histórico recente encontrado.</p>`;
     } else {
-        conteudo.innerHTML = historico.map((scrim, i) => {
-            const cor = scrim.vitorias === scrim.derrotas ? '#aaa' : (scrim.vitorias > scrim.derrotas ? '#4caf50' : '#f44336');
-            const jogosHtml = scrim.partidas.slice(0, 3).map(partida => {
-                const ganhou = String(partida.vencedor) === String(idTime);
-                return `<div style="display:flex;justify-content:space-between;gap:6px;margin-top:5px;font-size:10px;color:var(--texto-secundario, #aaa);">
-                    <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapar(partida.mapa || 'Mapa')}</span>
-                    <span style="white-space:nowrap;color:${ganhou ? '#4caf50' : '#f44336'};">${ganhou ? 'VITÓRIA' : 'DERROTA'}</span>
-                </div>`;
-            }).join('');
-            const data = scrim.data ? escapar(scrim.data) : (scrim.ultimoTimestamp ? new Date(scrim.ultimoTimestamp).toLocaleString('pt-BR') : 'Data indisponível');
-            return `<div style="background:var(--bg-geral, #181820);padding:12px;border-radius:8px;text-align:left;min-width:0;border:1px solid ${cor}55;">
-                <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:7px;">
-                    <span style="font-size:10px;color:gray;">SCRIM ${i + 1}</span>
-                    <span style="font-size:10px;color:gray;">${data}</span>
+        conteudo.innerHTML = ultimas3.map((h, i) => `
+            <div style="background:var(--bg-geral); padding:10px; border-radius:8px; text-align:center; min-width:120px; border: 1px solid ${h.win ? 'rgba(0,255,0,0.2)' : 'rgba(255,0,0,0.2)'};">
+                <div style="font-size:10px; color:gray; margin-bottom:5px;">${h.win ? '<span style="color:#4caf50;">VITÓRIA</span>' : '<span style="color:#f44336;">DERROTA</span>'}</div>
+                <div style="display:flex; justify-content:center; gap:5px;">
+                    ${h.comp.map(b => `<img src="brawlers/${formatImg(b)}.png" style="width:28px; border-radius:4px;" onerror="fallbackImagem(this,'brawlers/default.png')" title="${b}">`).join('')}
                 </div>
-                <div style="font-size:12px;font-weight:bold;overflow-wrap:anywhere;">vs ${escapar(scrim.adversario)}</div>
-                <div style="font-size:23px;font-weight:900;text-align:center;color:${cor};margin:7px 0;">${scrim.vitorias} - ${scrim.derrotas}</div>
-                <div style="font-size:10px;color:var(--texto-secundario, #aaa);text-align:center;">${scrim.total} partida(s) neste modo</div>
-                <div style="margin-top:8px;border-top:1px solid var(--borda-destaque, #333);padding-top:5px;">${jogosHtml}</div>
-            </div>`;
-        }).join('');
+            </div>
+        `).join('');
     }
+    
     modal.style.display = 'block';
 }
 
