@@ -35,7 +35,7 @@ COLUNAS_BANS = ["id_partida", "regiao", "mapa", "modo", "id_time", "nome_time", 
 MAPEAMENTO_PLAYERS = {
 # SA  
         "#GYCYCLRJL": {"nome": "BH|Prozy", "id_time": "BH", "nome_time": "BH ESPORTS", "regiao": "SA"},
-        "#JQ8LLLY": {"nome": "LOUD|FireCrow", "id_time": "LOUD", "nome_time": "LOUD", "regiao": "SA"},
+        "#QJULVGU": {"nome": "LOUD|Edinho", "id_time": "LOUD", "nome_time": "LOUD", "regiao": "SA"},
         "#JVRCVJ9Q": {"nome": "OCX|Pekka", "id_time": "OCX", "nome_time": "OCX DIVISION", "regiao": "SA"},
         "#9JYG98GG": {"nome": "DZ|Bryan 乂", "id_time": "DZ", "nome_time": "DAYCARE ZERO", "regiao": "SA"},
         "#CQLR0Y80": {"nome": "NS|Tufa", "id_time": "NS", "nome_time": "NINGUÉM SEGURA", "regiao": "SA"},
@@ -49,7 +49,6 @@ MAPEAMENTO_PLAYERS = {
         "#GJPVYUQG": {"nome": "QQQ|Deykonn", "id_time": "QQQ", "nome_time": "QUIERO QUE QUE", "regiao": "SA"},
         "#JCGGGQUP": {"nome": "NX|Sagaz", "id_time": "NX", "nome_time": "NOXIUM E-SPORTS", "regiao": "SA"},
         "#YY9RY0UGC": {"nome": "awk hate you", "id_time": "YX", "nome_time": "YRONIX", "regiao": "SA"},
-        "#G2G8VC02C": {"nome": "Dvzz🐐", "id_time": "RFA", "nome_time": "ROSTER F/A", "regiao": "SA"},
         "#8RCCV9RLC": {"nome": "Brawlerzin", "id_time": "RDC", "nome_time": "RADICAL", "regiao": "SA"},
         "#C0LCP8P2": {"nome": "Hiro ❥", "id_time": "FA", "nome_time": "F/A", "regiao": "SA"},
 # NA
