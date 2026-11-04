@@ -6,7 +6,6 @@ window.BSC_USERS = [
     {username: "lion",password: "Arthur0602"},
     {username: "fream",password: "goat"},
     {username: "klau",password: "KlauBS"},
-    {username: "Sagaz67",password: "4128"},
     {username: "Titans01",password: "t01"},
     {username: "divulg",password: "staff"},
     {username: "KroosBS",password: "05092012"},
