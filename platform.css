@@ -1492,3 +1492,24 @@ html[data-platform="mobile"] .scrim-team-picks-right {
 .side-nav-brand .brand-word { color:#fff !important; white-space:nowrap; opacity:0; max-width:0; overflow:hidden; transform:translateX(-10px); transition:opacity .3s ease,max-width .4s ease,transform .4s ease; }
 .side-nav-brand:hover .brand-mark { transform:rotate(360deg); }
 .side-nav-brand:hover .brand-word { opacity:1; max-width:110px; transform:translateX(0); }
+
+
+/* Conta e teste grátis */
+.side-nav-user-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.bsc-logout-btn{border:1px solid #3b4558;background:#202431;color:#e8edf7;border-radius:6px;padding:5px 9px;font-size:11px;font-weight:800;cursor:pointer}
+.bsc-logout-btn:hover{border-color:#0076fe;color:#fff}
+.bsc-trial-clock{display:flex;align-items:center;gap:7px;margin-top:9px;color:#70b7ff;font-size:11px;font-weight:800}
+.bsc-trial-clock[hidden]{display:none}
+.bsc-trial-clock img{width:17px;height:17px;object-fit:contain}
+.bsc-trial-logout-modal{position:fixed;inset:0;z-index:100200;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:18px}
+.bsc-trial-logout-card{width:min(440px,100%);background:#151821;border:1px solid #343b4d;border-radius:13px;padding:24px;color:#f5f7fb;box-shadow:0 20px 70px #000b;text-align:center}
+.bsc-trial-logout-card p{font-size:14px;line-height:1.6;color:#d8deea;margin:0 0 18px}
+.bsc-trial-logout-card strong{display:block;margin-bottom:18px}
+.bsc-trial-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.bsc-trial-actions button{border-radius:8px;padding:10px 14px;font-weight:800;cursor:pointer}
+.bsc-trial-continue{background:#075dbb;border:1px solid #0076fe;color:#fff}
+.bsc-trial-exit{background:#282d39;border:1px solid #4b5364;color:#fff}
+.bsc-social-footer{position:fixed;z-index:99980;left:calc(var(--side-nav-width,250px) + 18px);right:18px;bottom:8px;display:flex;justify-content:center;align-items:center;gap:22px;padding:7px 12px;background:rgba(12,14,20,.82);border:1px solid rgba(0,118,254,.18);border-radius:9px;backdrop-filter:blur(8px);font-size:11px}
+.bsc-social-footer a{display:flex;align-items:center;gap:6px;color:#cbd5e1;text-decoration:none;font-weight:800}
+.bsc-social-footer a span{color:#1684ff;font-size:15px}
+@media(max-width:700px){.bsc-social-footer{left:8px;right:8px;bottom:58px;gap:13px;font-size:10px;padding:6px}}

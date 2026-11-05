@@ -51,6 +51,8 @@ MAPEAMENTO_PLAYERS = {
         "#YY9RY0UGC": {"nome": "awk hate you", "id_time": "YX", "nome_time": "YRONIX", "regiao": "SA"},
         "#8RCCV9RLC": {"nome": "Brawlerzin", "id_time": "RDC", "nome_time": "RADICAL", "regiao": "SA"},
         "#C0LCP8P2": {"nome": "Hiro ❥", "id_time": "FA", "nome_time": "F/A", "regiao": "SA"},
+        "#8LYVRR2U2": {"nome": "Quese", "id_time": "PHX", "nome_time": "PHOENIX ACADEMY", "regiao": "SA"},
+#        "#": {"nome": "", "id_time": "", "nome_time": "", "regiao": "SA"},
 # NA
         "#LVRRYPV": {"nome": "KDS|Bobby", "id_time": "KDS", "nome_time": "KDS", "regiao": "NA"},
         "#82RCQCVG": {"nome": "TRB|Lxffy", "id_time": "TRB", "nome_time": "TRIBE GAMING", "regiao": "NA"},
@@ -98,10 +100,6 @@ MAPEAMENTO_PLAYERS = {
         "#8CQURRJJY": {"nome": "RNTX|Sergant", "id_time": "RNTX", "nome_time": "REVENANT", "regiao": "CN"},
         "#9GGU9C9Y": {"nome": "SLG|Trashânt 🐯", "id_time": "SLG", "nome_time": "SLG", "regiao": "CN"},
 
-
-# CN (China) — mantenha o mesmo modelo de cadastro usado nas outras regiões.
-# Exemplo (substitua os valores pelos dados reais; não deixe o exemplo ativo):
-# "#ID_DO_JOGADOR": {"nome": "NICK", "id_time": "IDTIME", "nome_time": "NOME DO TIME", "regiao": "CN"},
 }
 
 def obter_fuso_brasilia():

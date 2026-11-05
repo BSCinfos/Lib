@@ -136,6 +136,43 @@
         return div;
     }
 
+
+    function setupAccountControls(userBox) {
+        const logout = userBox.querySelector(".bsc-logout-btn");
+        const clock = userBox.querySelector(".bsc-trial-clock");
+        const clockText = userBox.querySelector(".bsc-trial-time");
+        function isTrial(){ return typeof window.BSC_IS_TRIAL === "function" && window.BSC_IS_TRIAL(); }
+        function format(ms){
+            const total=Math.max(0,Math.ceil(ms/1000));
+            return String(Math.floor(total/60)).padStart(2,"0")+":"+String(total%60).padStart(2,"0");
+        }
+        function endExpired(){
+            if(typeof window.BSC_END_TRIAL==="function") window.BSC_END_TRIAL();
+            window.location.replace("login.html");
+        }
+        function tick(){
+            if(!isTrial()){clock.hidden=true;return;}
+            const remaining=typeof window.BSC_TRIAL_REMAINING==="function"?window.BSC_TRIAL_REMAINING():0;
+            clock.hidden=false; clockText.textContent="Tempo restante: "+format(remaining);
+            if(remaining<=0) endExpired();
+        }
+        logout.addEventListener("click",function(){
+            if(!isTrial()){ if(typeof window.BSC_LOGOUT==="function") window.BSC_LOGOUT(); return; }
+            let modal=document.querySelector(".bsc-trial-logout-modal");
+            if(!modal){
+                modal=document.createElement("div"); modal.className="bsc-trial-logout-modal";
+                modal.innerHTML='<div class="bsc-trial-logout-card" role="dialog" aria-modal="true"><p>Caso você saia agora, você perderá todo o seu tempo de testes, assim não podendo mais acessar a plataforma.</p><strong>Deseja Sair?</strong><div class="bsc-trial-actions"><button type="button" class="bsc-trial-continue">Continuar testando</button><button type="button" class="bsc-trial-exit">Sair</button></div></div>';
+                document.body.appendChild(modal);
+                modal.querySelector(".bsc-trial-continue").addEventListener("click",()=>modal.remove());
+                modal.querySelector(".bsc-trial-exit").addEventListener("click",()=>{
+                    if(typeof window.BSC_END_TRIAL==="function") window.BSC_END_TRIAL();
+                    window.location.replace("login.html");
+                });
+            }
+        });
+        tick(); window.setInterval(tick,1000);
+    }
+
     function createSideNav() {
         if (document.querySelector(".bsc-side-nav")) return;
         if (currentPage() === "login.html") return;
@@ -173,9 +210,10 @@
         // Nickname fica acima da seção MENU.
         const userBox = document.createElement("div");
         userBox.className = "side-nav-user";
-        userBox.innerHTML = '<span class="side-nav-user-label">USUÁRIO</span><strong class="side-nav-user-name"></strong>';
+        userBox.innerHTML = '<span class="side-nav-user-label">USUÁRIO</span><div class="side-nav-user-row"><strong class="side-nav-user-name"></strong><button type="button" class="bsc-logout-btn">Sair</button></div><div class="bsc-trial-clock" hidden><img src="element/time.png" alt=""><span class="bsc-trial-time"></span></div>';
         userBox.querySelector(".side-nav-user-name").textContent = getNickname();
         aside.appendChild(userBox);
+        setupAccountControls(userBox);
 
         const nav = document.createElement("div");
         nav.className = "side-nav-scroll";
@@ -566,6 +604,12 @@
         document.body.appendChild(backdrop);
         document.body.appendChild(toggle);
         document.body.appendChild(aside);
+        if (!document.querySelector(".bsc-social-footer")) {
+            const footer=document.createElement("footer");
+            footer.className="bsc-social-footer";
+            footer.innerHTML='<a href="https://instagram.com/bs_libb" target="_blank" rel="noopener"><span>◎</span>@bs_libb</a><a href="https://x.com/bs_lib" target="_blank" rel="noopener"><span>𝕏</span>@bs_lib</a><a href="https://discord.com/" target="_blank" rel="noopener"><span>◉</span>@bs_lib</a>';
+            document.body.appendChild(footer);
+        }
 
         function updateState(open, save = true) {
             document.body.classList.toggle("side-nav-open", open);
