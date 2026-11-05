@@ -134,12 +134,12 @@
     "regiao": "SA",
     "jogadores": [
       {
-        "tag": "#GJPVYUQG",
-        "nome": "Deykon"
-      },
-      {
         "tag": "#PU2QQLUVY",
         "nome": "Starr Kai ✰"
+      },
+      {
+        "tag": "#GJPVYUQG",
+        "nome": "Deykon"
       }
     ]
   },
