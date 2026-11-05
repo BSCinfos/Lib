@@ -47,12 +47,37 @@
       }
     ]
   },
-  "#9JYG98GG": {
-    "nome": "Bryan 乂",
+  "#PJPL0QY9": {
+    "nome": "DCZ | Bradbari",
     "id_time": "DZ",
     "nome_time": "DAYCARE ZERO",
     "regiao": "SA",
-    "jogadores": []
+    "jogadores": [
+      {
+        "tag": "#PU2QQLUVY",
+        "nome": "Starr Kai ✰"
+      },
+      {
+        "tag": "#89PVJG9R0",
+        "nome": "rhz"
+      }
+    ]
+  },
+  "#22PGQU98R": {
+    "nome": "Todd",
+    "id_time": "ZRT",
+    "nome_time": "ZURITA GANG",
+    "regiao": "SA",
+    "jogadores": [
+      {
+        "tag": "#89PVJG9R0",
+        "nome": "rhz"
+      },
+      {
+        "tag": "#CPPV2PQG",
+        "nome": "MeliodasGod🐐"
+      }
+    ]
   },
   "#CQLR0Y80": {
     "nome": "FX|Tufa",
