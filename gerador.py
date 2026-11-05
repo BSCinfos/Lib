@@ -35,7 +35,7 @@ COLUNAS_BANS = ["id_partida", "regiao", "mapa", "modo", "id_time", "nome_time", 
 MAPEAMENTO_PLAYERS = {
 # SA  
         "#YGQYGCR": {"nome": "BH|Portox", "id_time": "BH", "nome_time": "BH ESPORTS", "regiao": "SA"},
-        "#QJULVGU": {"nome": "LOUD|Edinho", "id_time": "LOUD", "nome_time": "LOUD", "regiao": "SA"},
+        "#JQ8LLLY": {"nome": "LOUD|FireCrow", "id_time": "LOUD", "nome_time": "LOUD", "regiao": "SA"},
         "#JVRCVJ9Q": {"nome": "OCX|Pekka", "id_time": "OCX", "nome_time": "OCX DIVISION", "regiao": "SA"},
         "#PJPL0QY9": {"nome": "DZ|Bradbari", "id_time": "DZ", "nome_time": "DAYCARE ZERO", "regiao": "SA"},
         "#22PGQU98R": {"nome": "ZRT|Todd", "id_time": "ZRT", "nome_time": "ZURITA GANG", "regiao": "SA"},
