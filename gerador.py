@@ -34,7 +34,7 @@ COLUNAS_BANS = ["id_partida", "regiao", "mapa", "modo", "id_time", "nome_time", 
 # (que roda separadamente, minerando dados via API) precisa desse passo manual de copiar/colar.
 MAPEAMENTO_PLAYERS = {
 # SA  
-        "#GYCYCLRJL": {"nome": "BH|Prozy", "id_time": "BH", "nome_time": "BH ESPORTS", "regiao": "SA"},
+        "#YGQYGCR": {"nome": "BH|Portox", "id_time": "BH", "nome_time": "BH ESPORTS", "regiao": "SA"},
         "#QJULVGU": {"nome": "LOUD|Edinho", "id_time": "LOUD", "nome_time": "LOUD", "regiao": "SA"},
         "#JVRCVJ9Q": {"nome": "OCX|Pekka", "id_time": "OCX", "nome_time": "OCX DIVISION", "regiao": "SA"},
         "#PJPL0QY9": {"nome": "DZ|Bradbari", "id_time": "DZ", "nome_time": "DAYCARE ZERO", "regiao": "SA"},
@@ -42,7 +42,6 @@ MAPEAMENTO_PLAYERS = {
         "#CQLR0Y80": {"nome": "NS|Tufa", "id_time": "NS", "nome_time": "NINGUÉM SEGURA", "regiao": "SA"},
         "#2GV09VJJP": {"nome": "FireMirillo", "id_time": "AL", "nome_time": "ACRE LOVERS", "regiao": "SA"},
         "#9QCJPL20": {"nome": "OS|Golden", "id_time": "OS", "nome_time": "OLIMPO SQUAD", "regiao": "SA"},
-        "#PR9U2JL": {"nome": "SKC|Juan Carlos", "id_time": "SKC", "nome_time": "SKCALALAS SA", "regiao": "SA"},
         "#CPPV2PQG": {"nome": "GDT| MeliodasGod🐐", "id_time": "GDT", "nome_time": "GORDITOS", "regiao": "SA"},
         "#P0UVQVUVG": {"nome": "igorr🏌️", "id_time": "ZTH", "nome_time": "ZHETIAN", "regiao": "SA"},
         "#R2LR2QLG": {"nome": "RED|Mohtep", "id_time": "RED", "nome_time": "RED CANIDS", "regiao": "SA"},
