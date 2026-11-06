@@ -642,6 +642,22 @@
       }
     ]
   },
+  "#20L88L2J": {
+    "nome": "Code: LeNain",
+    "id_time": "CGN",
+    "nome_time": "CGN",
+    "regiao": "EMEA",
+    "jogadores": [
+      {
+        "tag": "#Q808R2CV",
+        "nome": "CGN|Nes"
+      },
+      {
+        "tag": "#2208QGGGL",
+        "nome": "CGN|Dompe"
+      }
+    ]
+  },
   "#9ULYPV8": {
     "nome": "CR|Tensai",
     "id_time": "CR",
@@ -734,15 +750,15 @@
     "regiao": "EA",
     "jogadores": []
   },
-  "#28VP0G808": {
-    "nome": "INS|Koga",
+  "#80YVJGRY": {
+    "nome": "INS|Wahochi",
     "id_time": "INS",
     "nome_time": "INSOMNIA",
     "regiao": "EA",
     "jogadores": [
       {
-        "tag": "#80YVJGRY",
-        "nome": "INS|Wahochi"
+        "tag": "#28VP0G808",
+        "nome": "INS|Koga"
       },
       {
         "tag": "#CV9Y9VPP",
