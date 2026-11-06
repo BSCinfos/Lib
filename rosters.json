@@ -134,12 +134,12 @@
     "regiao": "SA",
     "jogadores": [
       {
-        "tag": "#PU2QQLUVY",
-        "nome": "Starr Kai ✰"
-      },
-      {
         "tag": "#GJPVYUQG",
         "nome": "Deykon"
+      },
+      {
+        "tag": "#PU2QQLUVY",
+        "nome": "Starr Kai ✰"
       }
     ]
   },
@@ -601,12 +601,12 @@
     "regiao": "EMEA",
     "jogadores": [
       {
-        "tag": "#88Y8UGPG",
-        "nome": "TLF | Rup"
-      },
-      {
         "tag": "#29VRJU08C",
         "nome": "SK | Yoko"
+      },
+      {
+        "tag": "#88Y8UGPG",
+        "nome": "TLF | Rup"
       }
     ]
   },
