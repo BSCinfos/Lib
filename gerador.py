@@ -64,6 +64,7 @@ MAPEAMENTO_PLAYERS = {
         "#8UL0U08V": {"nome": "Winq", "id_time": "UTP", "nome_time": "UTOPIA", "regiao": "NA"},
         "#VJUQ0Y": {"nome": "AMN|chino ᛪ༙", "id_time": "AMN", "nome_time": "AMNESIA", "regiao": "NA"},
         "#R80QRP0G": {"nome": "Squeezy", "id_time": "PFZ", "nome_time": "PFZ", "regiao": "NA"},
+        #"#": {"nome": "", "id_time": "", "nome_time": "", "regiao": "NA"},
 # EMEA
         "#P2808PRC": {"nome": "FUT|Nob?", "id_time": "FUT", "nome_time": "FUT ESPORTS", "regiao": "EMEA"},
         "#2VJCCCQGP": {"nome": "NAVI|GeRo", "id_time": "NAVI", "nome_time": "NAVI", "regiao": "EMEA"},
@@ -80,6 +81,8 @@ MAPEAMENTO_PLAYERS = {
         "#2208QGGGL": {"nome": "CNG|Dompe", "id_time": "CNG", "nome_time": "CNG", "regiao": "EMEA"},
         "#2YYJYPCL": {"nome": "KBP|Tomzy", "id_time": "KBP", "nome_time": "F/A KEBAP", "regiao": "EMEA"},
         "#LLV82LQPU": {"nome": "REV|Fayelo", "id_time": "REV", "nome_time": "REVERSO HIVE", "regiao": "EMEA"},
+        "#20L88L2J": {"nome": "LeNain", "id_time": "CGN", "nome_time": "CGN", "regiao": "EMEA"},
+# EMEA
         
 # EA
         "#9ULYPV8": {"nome": "CR|Tensai", "id_time": "CR", "nome_time": "CRAZY RACCOON", "regiao": "EA"},
@@ -90,9 +93,10 @@ MAPEAMENTO_PLAYERS = {
         "#82CJYJPG2": {"nome": "RVL|Yutapin", "id_time": "RVL", "nome_time": "RIVAL", "regiao": "EA"},
         "#29UGLJV2G": {"nome": "RC|Levi", "id_time": "RC", "nome_time": "REJECT", "regiao": "EA"},
         "#28PU0P9L0": {"nome": "FL|Achapi", "id_time": "FL", "nome_time": "FENNEL", "regiao": "EA"},
-        "#28VP0G808": {"nome": "INS|Koga", "id_time": "INS", "nome_time": "INSOMNIA", "regiao": "EA"},
+        "#80YVJGRY": {"nome": "INS|Mahochi", "id_time": "INS", "nome_time": "INSOMNIA", "regiao": "EA"},
         "#89UUQLJCC": {"nome": "FZ|Toridesu", "id_time": "FZ", "nome_time": "FRENZY", "regiao": "EA"},
-        "#8G982C80L": {"nome": "WWL|Gon", "id_time": "WWL", "nome_time": "WWL", "regiao": "EA"},   
+        "#8G982C80L": {"nome": "WWL|Gon", "id_time": "WWL", "nome_time": "WWL", "regiao": "EA"}, 
+        #"#": {"nome": "", "id_time": "", "nome_time": "", "regiao": "EA"},
 # CN
         "#2V9P902P99": {"nome": "AXR|Coldrink", "id_time": "AXR", "nome_time": "ACE XERO", "regiao": "CN"},
         "#2V9PP02U98": {"nome": "TOC|X P R", "id_time": "TOC", "nome_time": "TOC", "regiao": "CN"},
