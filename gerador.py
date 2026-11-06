@@ -68,7 +68,7 @@ MAPEAMENTO_PLAYERS = {
         "#P2808PRC": {"nome": "FUT|Nob?", "id_time": "FUT", "nome_time": "FUT ESPORTS", "regiao": "EMEA"},
         "#2VJCCCQGP": {"nome": "NAVI|GeRo", "id_time": "NAVI", "nome_time": "NAVI", "regiao": "EMEA"},
         "#YQUCCJ2": {"nome": "HMB|Symantec", "id_time": "HMB", "nome_time": "HMBLE", "regiao": "EMEA"},
-        "#9LVUC2PY": {"nome": "SK|Ope", "id_time": "SK", "nome_time": "SK GAMING", "regiao": "EMEA"},
+        "#29VRJU08C": {"nome": "SK|Yoko", "id_time": "SK", "nome_time": "SK GAMING", "regiao": "EMEA"},
         "#88Y8UGPG": {"nome": "TLF|Rup", "id_time": "TLF", "nome_time": "TLF", "regiao": "EMEA"},
         "#90CUVVL2R": {"nome": "SxS|Biso🍥", "id_time": "SxS", "nome_time": "SXS", "regiao": "EMEA"},
         "#PCPRPJV": {"nome": "TH|IKaoss", "id_time": "TH", "nome_time": "TEAM HERETICS", "regiao": "EMEA"},
