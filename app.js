@@ -652,9 +652,17 @@ function estruturarMD3(dadosPeriodo) {
 
     const scrims = [];
     partidasEstruturadas.sort((a,b) => a.timestamp - b.timestamp).forEach(partida => {
-        // Mantém a exigência de roster completo para não atribuir partidas
-        // de substitutos a um time cadastrado.
-        if (!timeRosterCompleto(partida.tagsA, partida.tAId) || !timeRosterCompleto(partida.tagsB, partida.tBId)) return;
+        // Scrims comuns continuam exigindo roster completo para evitar atribuir
+        // partidas de substitutos ao time errado. Partidas de torneio, porém,
+        // podem vir com adversários temporários (OPONENTE_T0 / DESCONHECIDO T0)
+        // e não devem ser descartadas por não existir um roster cadastrado.
+        const tipoPartida = String(partida.tipo || '').trim().toLowerCase();
+        const ehTorneio = tipoPartida === 'tournament' ||
+            String(partida.tAId || '').toUpperCase().startsWith('OPONENTE_') ||
+            String(partida.tBId || '').toUpperCase().startsWith('OPONENTE_');
+        if (!ehTorneio &&
+            (!timeRosterCompleto(partida.tagsA, partida.tAId) ||
+             !timeRosterCompleto(partida.tagsB, partida.tBId))) return;
 
         const chaveTimes = [partida.tAId, partida.tBId].sort().join(' VS ');
         const scrimExistente = scrims.find(s => s.chave === chaveTimes &&
