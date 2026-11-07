@@ -78,10 +78,9 @@ MAPEAMENTO_PLAYERS = {
         "#PLV89CGP": {"nome": "BIG|Salty🥥", "id_time": "BIG", "nome_time": "BIG", "regiao": "EMEA"},
         "#8UR02QQL2": {"nome": "TLB|SanFire", "id_time": "TLB", "nome_time": "TALENTS LAB", "regiao": "EMEA"},
         "#82GG2RLQG": {"nome": "FUT|ZeyroX", "id_time": "FUTA", "nome_time": "FUT ACADEMY", "regiao": "EMEA"},
-        "#2208QGGGL": {"nome": "CNG|Dompe", "id_time": "CNG", "nome_time": "CNG", "regiao": "EMEA"},
         "#2YYJYPCL": {"nome": "KBP|Tomzy", "id_time": "KBP", "nome_time": "F/A KEBAP", "regiao": "EMEA"},
         "#LLV82LQPU": {"nome": "REV|Fayelo", "id_time": "REV", "nome_time": "REVERSO HIVE", "regiao": "EMEA"},
-        "#20L88L2J": {"nome": "LeNain", "id_time": "CGN", "nome_time": "CGN", "regiao": "EMEA"},
+        "#20L88L2J": {"nome": "CGN|LeNain", "id_time": "CGN", "nome_time": "CGN", "regiao": "EMEA"},
 # EMEA
         
 # EA
