@@ -33,6 +33,8 @@ COLUNAS_BANS = ["id_partida", "regiao", "mapa", "modo", "id_time", "nome_time", 
 # para escrever em arquivos do servidor/repositório — então a sincronização desse arquivo .py
 # (que roda separadamente, minerando dados via API) precisa desse passo manual de copiar/colar.
 MAPEAMENTO_PLAYERS = {
+#        "#": {"nome": "", "id_time": "", "nome_time": "", "regiao": ""},
+        
 # SA  
         "#YGQYGCR": {"nome": "BH|Portox", "id_time": "BH", "nome_time": "BH ESPORTS", "regiao": "SA"},
         "#JQ8LLLY": {"nome": "LOUD|FireCrow", "id_time": "LOUD", "nome_time": "LOUD", "regiao": "SA"},
@@ -45,14 +47,14 @@ MAPEAMENTO_PLAYERS = {
         "#CPPV2PQG": {"nome": "GDT| MeliodasGod🐐", "id_time": "GDT", "nome_time": "GORDITOS", "regiao": "SA"},
         "#P8RQ90UY9": {"nome": "ZTH|VitorKing👑", "id_time": "ZTH", "nome_time": "ZHETIAN", "regiao": "SA"},
         "#R2LR2QLG": {"nome": "RED|Mohtep", "id_time": "RED", "nome_time": "RED CANIDS", "regiao": "SA"},
-        "#80VLPJCCC": {"nome": "CB|Tilo", "id_time": "CB", "nome_time": "CRECHE BRAWL", "regiao": "SA"},
+        "#9Q22C88V8": {"nome": "CB|Bielz", "id_time": "CB", "nome_time": "CRECHE BRAWL", "regiao": "SA"},
         "#GJPVYUQG": {"nome": "QQQ|Deykonn", "id_time": "QQQ", "nome_time": "QUIERO QUE QUE", "regiao": "SA"},
         "#JCGGGQUP": {"nome": "NX|Sagaz", "id_time": "NX", "nome_time": "NOXIUM E-SPORTS", "regiao": "SA"},
         "#YY9RY0UGC": {"nome": "awk hate you", "id_time": "YX", "nome_time": "YRONIX", "regiao": "SA"},
         "#8RCCV9RLC": {"nome": "Brawlerzin", "id_time": "RDC", "nome_time": "RADICAL", "regiao": "SA"},
         "#C0LCP8P2": {"nome": "Hiro ❥", "id_time": "FA", "nome_time": "F/A", "regiao": "SA"},
         "#8LYVRR2U2": {"nome": "Quese", "id_time": "PHX", "nome_time": "PHOENIX ACADEMY", "regiao": "SA"},
-#        "#": {"nome": "", "id_time": "", "nome_time": "", "regiao": "SA"},
+
 # NA
         "#LVRRYPV": {"nome": "KDS|Bobby", "id_time": "KDS", "nome_time": "KDS", "regiao": "NA"},
         "#82RCQCVG": {"nome": "TRB|Lxffy", "id_time": "TRB", "nome_time": "TRIBE GAMING", "regiao": "NA"},
