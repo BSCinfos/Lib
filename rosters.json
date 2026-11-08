@@ -475,12 +475,12 @@
     "regiao": "EMEA",
     "jogadores": [
       {
-        "tag": "#88Y8UGPG",
-        "nome": "TLF | Rup"
-      },
-      {
         "tag": "#2208QGGGL",
         "nome": "CGN|Dompe"
+      },
+      {
+        "tag": "#88Y8UGPG",
+        "nome": "TLF | Rup"
       }
     ]
   },
