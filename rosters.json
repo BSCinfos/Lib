@@ -54,12 +54,12 @@
     "regiao": "SA",
     "jogadores": [
       {
-        "tag": "#PY0CUPJC0",
-        "nome": "Jet Li"
-      },
-      {
         "tag": "#PU2QQLUVY",
         "nome": "Starr Kai ✰"
+      },
+      {
+        "tag": "#GLQG9CU20",
+        "nome": "Shxrkk𐚁"
       }
     ]
   },
@@ -746,11 +746,20 @@
     "jogadores": []
   },
   "#28PU0P9L0": {
-    "nome": "Achapi",
+    "nome": "FL|Achapi",
     "id_time": "FL",
     "nome_time": "FENNEL",
     "regiao": "EA",
-    "jogadores": []
+    "jogadores": [
+      {
+        "tag": "#2282LR0YG",
+        "nome": "FL|Ken-G"
+      },
+      {
+        "tag": "#8Y2Y0GYYG",
+        "nome": "FL|I see"
+      }
+    ]
   },
   "#80YVJGRY": {
     "nome": "INS|Wahochi",
