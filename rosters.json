@@ -837,12 +837,12 @@
     "regiao": "CN",
     "jogadores": [
       {
-        "tag": "#2U9P2YJRYP",
-        "nome": "RNTX | Walkthru"
-      },
-      {
         "tag": "#2JYRU9QVUP",
         "nome": "Tsuki"
+      },
+      {
+        "tag": "#2U9P2YJRYP",
+        "nome": "RNTX | Walkthru"
       }
     ]
   },
