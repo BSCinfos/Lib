@@ -794,11 +794,20 @@
     ]
   },
   "#8G982C80L": {
-    "nome": "Gon",
+    "nome": "WWL | Gon",
     "id_time": "WWL",
     "nome_time": "WWL",
     "regiao": "EA",
-    "jogadores": []
+    "jogadores": [
+      {
+        "tag": "#2QLVJ8PRQ",
+        "nome": "AAA|Alaz"
+      },
+      {
+        "tag": "#RJGP0J2JR",
+        "nome": "VOW|Radin"
+      }
+    ]
   },
   "#2V9P902P99": {
     "nome": "AXR|Coldrink",
