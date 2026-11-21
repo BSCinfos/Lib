@@ -388,12 +388,12 @@
     "regiao": "NA",
     "jogadores": [
       {
-        "tag": "#LJ2GUU980",
-        "nome": "mortos"
-      },
-      {
         "tag": "#PL0GRVJRJ",
         "nome": "Junnie🦋"
+      },
+      {
+        "tag": "#LJ2GUU980",
+        "nome": "mortos"
       }
     ]
   },
