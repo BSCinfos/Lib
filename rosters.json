@@ -809,12 +809,12 @@
     "regiao": "EA",
     "jogadores": [
       {
-        "tag": "#LJ0288PRG",
-        "nome": "TERRY"
-      },
-      {
         "tag": "#L0PQLCLY",
         "nome": "Happy Giryun"
+      },
+      {
+        "tag": "#LJ0288PRG",
+        "nome": "TERRY"
       }
     ]
   },
