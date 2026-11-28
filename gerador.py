@@ -54,6 +54,7 @@ MAPEAMENTO_PLAYERS = {
         "#8RCCV9RLC": {"nome": "Brawlerzin", "id_time": "RDC", "nome_time": "RADICAL", "regiao": "SA"},
         "#C0LCP8P2": {"nome": "Hiro ❥", "id_time": "FA", "nome_time": "F/A", "regiao": "SA"},
         "#8LYVRR2U2": {"nome": "Quese", "id_time": "PHX", "nome_time": "PHOENIX ACADEMY", "regiao": "SA"},
+        "#2YG2L9JYLV": {"nome": "Kevyn", "id_time": "F/A", "nome_time": "MOTOROLOS F/A", "regiao": "SA"},
 
 # NA
         "#LVRRYPV": {"nome": "KDS|Bobby", "id_time": "KDS", "nome_time": "KDS", "regiao": "NA"},
