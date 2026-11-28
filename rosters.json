@@ -716,11 +716,20 @@
     ]
   },
   "#2RQQ9PGC": {
-    "nome": "Shigemyon",
+    "nome": "Sh!gemyon",
     "id_time": "IGM",
     "nome_time": "IGNUM",
     "regiao": "EA",
-    "jogadores": []
+    "jogadores": [
+      {
+        "tag": "#99GGUPY2U",
+        "nome": "ZETA|Danmeshi"
+      },
+      {
+        "tag": "#89UUQLJCC",
+        "nome": "とりです"
+      }
+    ]
   },
   "#LJ0288PRG": {
     "nome": "TERRY",
@@ -809,12 +818,12 @@
     "regiao": "EA",
     "jogadores": [
       {
-        "tag": "#8J0PRCR8G",
-        "nome": "SIE|Haruto"
+        "tag": "#99GGUPY2U",
+        "nome": "ZETA|Danmeshi"
       },
       {
-        "tag": "#2LLJ8RJRR",
-        "nome": "SIE|Shake"
+        "tag": "#2RQQ9PGC",
+        "nome": "Sh!gemyon"
       }
     ]
   },
